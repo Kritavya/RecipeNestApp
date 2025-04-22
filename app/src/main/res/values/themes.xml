@@ -1,9 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.RecipeNest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme -->
+    <style name="Base.Theme.Figma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Ensure Material 3 button tinting is fully disabled -->
+        <item name="buttonStyle">@style/CustomButtonStyle</item>
+        <item name="materialButtonStyle">@style/CustomButtonStyle</item>
     </style>
 
-    <style name="Theme.RecipeNest" parent="Base.Theme.RecipeNest" />
+    <style name="Theme.Figma" parent="Base.Theme.Figma" />
+
+    <!-- Custom Button Style to Remove Tinting -->
+    <style name="CustomButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
 </resources>
