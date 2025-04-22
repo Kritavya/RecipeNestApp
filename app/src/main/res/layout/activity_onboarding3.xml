@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Title: "What’s Inside?" -->
+    <TextView
+        android:id="@+id/tv_whats_inside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What’s Inside?"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <!-- Divider Below Title -->
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_whats_inside"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#CCCCCC" />
+
+    <!-- Subheading: "2. Personalized your feed" -->
+    <TextView
+        android:id="@+id/tv_personalized"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Personalized your feed"
+        android:textColor="#FF9A04"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_below="@id/view_divider"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <!-- Main Container for "Mock Phone" or Food Sections -->
+    <RelativeLayout
+        android:id="@+id/container_food"
+        android:layout_width="wrap_content"
+        android:layout_height="353dp"
+        android:layout_below="@id/tv_personalized"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_box_light"
+        android:padding="16dp"> <!-- Use a light rounded background if desired -->
+
+        <!-- Indonesian Food Title -->
+        <TextView
+            android:id="@+id/tv_indonesian_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Indonesian Food"
+            android:textColor="#8F8E8E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Row of Indonesian Food placeholders -->
+        <LinearLayout
+            android:id="@+id/ll_indonesian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_indonesian_food"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/img_1" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/img" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/img_2" />
+        </LinearLayout>
+
+        <!-- Easy Dietary Recipe Title -->
+        <TextView
+            android:id="@+id/tv_dietary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_indonesian"
+            android:layout_marginTop="20dp"
+            android:text="Easy Dietary Recipe"
+            android:textColor="#8F8E8E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Row of Dietary placeholders -->
+        <LinearLayout
+            android:id="@+id/ll_dietary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dietary"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/img_3" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/img_4"
+                 />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/img_5"
+                 />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Bottom bar (vertical) with Next, dots, Skip -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginHorizontal="24dp">
+
+
+        <!-- Page Indicator (middle) -->
+        <TextView
+            android:id="@+id/tv_page_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="○ ● ○ ○"
+            android:textSize="20sp"
+            android:textColor="#FF9A04"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Next Button (large, rounded) -->
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/button_orange"
+            android:text="NEXT"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+
+
+        <!-- Skip Button (large, rounded) -->
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_button_white"
+            android:text="SKIP"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>

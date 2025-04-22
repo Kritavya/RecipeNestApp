@@ -1,0 +1,30 @@
+package com.kritavya.recipenest;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class OnboardingActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_onboarding);
+
+        // Get references to the UI elements
+        Button btnGetStarted = findViewById(R.id.btn_get_started);
+        TextView tvLoginLink = findViewById(R.id.tv_login_link);
+
+        // Using lambda expressions for cleaner code
+        btnGetStarted.setOnClickListener(v -> {
+            startActivity(new Intent(this, OnboardingActivity2.class));
+        });
+
+        tvLoginLink.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
+    }
+}
