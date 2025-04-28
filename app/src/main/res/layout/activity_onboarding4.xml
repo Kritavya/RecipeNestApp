@@ -23,7 +23,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="What’s Inside?"
+                android:text="What's Inside?"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
@@ -68,7 +68,7 @@
                         android:layout_marginStart="64dp"
                         android:background="@drawable/circle_background"
                         android:padding="16dp"
-                        />
+                        android:src="@drawable/ic_instagram" />
                 </RelativeLayout>
 
                 <!-- Row 2 - Right -->
@@ -85,7 +85,7 @@
                         android:layout_marginEnd="70dp"
                         android:background="@drawable/circle_background"
                         android:padding="16dp"
-                        />
+                        android:src="@drawable/ic_facebook" />
                 </RelativeLayout>
 
                 <!-- Row 3 - Left -->
@@ -102,7 +102,7 @@
                         android:layout_marginStart="64dp"
                         android:background="@drawable/circle_background"
                         android:padding="16dp"
-                        />
+                        android:src="@drawable/ic_pinterest" />
                 </RelativeLayout>
 
                 <!-- Row 4 - Right -->
@@ -119,7 +119,7 @@
                         android:layout_marginEnd="70dp"
                         android:background="@drawable/circle_background"
                         android:padding="16dp"
-                        />
+                        android:src="@drawable/ic_twitter_x" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -143,7 +143,7 @@
             android:id="@+id/tv_page_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="○ ○ ●"
+            android:text="● ● ● ○"
             android:textSize="20sp"
             android:textColor="#FF9A04"
             android:textStyle="bold"

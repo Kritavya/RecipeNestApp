@@ -19,6 +19,7 @@ public class OnboardingActivity3 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(OnboardingActivity3.this, OnboardingActivity4.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             }
         });
@@ -33,5 +34,11 @@ public class OnboardingActivity3 extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

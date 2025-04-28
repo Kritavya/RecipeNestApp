@@ -20,6 +20,7 @@ public class OnboardingActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(OnboardingActivity2.this, OnboardingActivity3.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             }
         });
@@ -34,5 +35,11 @@ public class OnboardingActivity2 extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

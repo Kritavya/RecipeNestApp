@@ -20,6 +20,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
         btnGetStarted.setOnClickListener(v -> {
             startActivity(new Intent(this, OnboardingActivity2.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
         tvLoginLink.setOnClickListener(v -> {

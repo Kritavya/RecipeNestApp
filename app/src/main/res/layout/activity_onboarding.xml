@@ -71,10 +71,11 @@
                 android:id="@+id/left_divider"
                 android:layout_width="160dp"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginEnd="8dp"/>
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="11dp"
+                android:layout_toStartOf="@+id/or_text"
+                android:background="@android:color/darker_gray" />
 
             <!-- "or" Text -->
             <TextView
@@ -92,10 +93,11 @@
                 android:id="@+id/right_divider"
                 android:layout_width="160dp"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"/>
+                android:layout_centerVertical="true"
+                android:layout_marginStart="11dp"
+                android:layout_toEndOf="@+id/or_text"
+                android:background="@android:color/darker_gray" />
 
         </RelativeLayout>
 
