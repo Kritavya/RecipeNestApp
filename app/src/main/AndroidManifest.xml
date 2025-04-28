@@ -29,10 +29,24 @@
         <!-- Onboarding Screens -->
         <activity android:name=".OnboardingActivity" android:exported="false"/>
         <activity android:name=".OnboardingActivity2" android:exported="false"/>
+        <activity android:name=".OnboardingActivity3" android:exported="false"/>
+        <activity android:name=".OnboardingActivity4" android:exported="false"/>
+
 
 
         <!-- Login Screen -->
         <activity android:name=".LoginActivity" android:exported="false"/>
+
+        <!-- Signup Screen -->
+        <activity android:name=".SignupActivity" android:exported="false"/>
+
+        <!-- Personlization Screens -->
+        <activity android:name=".PersonalizationActivity" android:exported="false"/>
+
+
+        <!-- Forgot Password Screen-->
+        <activity android:name=".ForgotPasswordActivity" android:exported="false"/>
+
 
         <!-- Main Activity (Final Destination After Onboarding/Login) -->
         <activity android:name=".MainActivity" android:exported="true" />

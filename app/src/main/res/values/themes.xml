@@ -6,7 +6,8 @@
         <item name="materialButtonStyle">@style/CustomButtonStyle</item>
     </style>
 
-    <style name="Theme.Figma" parent="Base.Theme.Figma" />
+    <style name="Theme.RecipeNest" parent="Base.Theme.Figma" />
+
 
     <!-- Custom Button Style to Remove Tinting -->
     <style name="CustomButtonStyle" parent="Widget.MaterialComponents.Button">

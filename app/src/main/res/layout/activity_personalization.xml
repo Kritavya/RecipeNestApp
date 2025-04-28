@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Personalized Feed Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Personalized Feed"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"/>
+
+        <!-- Progress Indicator -->
+        <LinearLayout
+            android:id="@+id/progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Active Dot -->
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/active_dot"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Line -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:background="#D3D3D3"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Inactive Dot -->
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/inactive_dot"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Line -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:background="#D3D3D3"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Inactive Dot -->
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/inactive_dot"/>
+        </LinearLayout>
+
+        <!-- Progress Labels -->
+        <LinearLayout
+            android:id="@+id/progress_labels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progress_indicator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cuisine"
+                android:textColor="#FF9A04"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dietary"
+                android:textColor="#A2A2A2"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredient"
+                android:textColor="#A2A2A2"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Cuisine Type Title -->
+        <TextView
+            android:id="@+id/cuisine_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progress_labels"
+            android:layout_marginTop="32dp"
+            android:text="Cuisine Type:"
+            android:textColor="#FF9A04"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@id/cuisine_label"
+            android:layout_marginTop="12dp"
+            android:hint="Search"
+            android:drawableStart="@drawable/ic_search_black_24dp"
+            android:background="@drawable/rounded_button_white"
+            android:paddingStart="16dp"
+            android:textColorHint="#B0B0B0"
+            android:textSize="18sp"/>
+
+        <!-- Most Popular Label -->
+        <TextView
+            android:id="@+id/most_popular_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_bar"
+            android:layout_marginTop="24dp"
+            android:text="Most Popular"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <!-- Cuisine Buttons Grid -->
+        <GridLayout
+            android:id="@+id/cuisine_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/most_popular_label"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:rowCount="4"
+            android:alignmentMode="alignMargins"
+            android:rowOrderPreserved="false"
+            android:useDefaultMargins="true">
+
+            <!-- Example Cuisine Buttons -->
+            <Button
+                android:id="@+id/chinese_btn"
+                style="@style/CuisineButtonSelected"
+                android:text="CHINESE"/>
+
+            <Button
+                android:id="@+id/mexican_btn"
+                style="@style/CuisineButton"
+                android:text="MEXICAN"/>
+
+            <Button
+                android:id="@+id/japanese_btn"
+                style="@style/CuisineButton"
+                android:text="JAPANESE"/>
+
+            <Button
+                android:id="@+id/french_btn"
+                style="@style/CuisineButton"
+                android:text="FRENCH"/>
+
+            <Button
+                android:id="@+id/thai_btn"
+                style="@style/CuisineButton"
+                android:text="THAI"/>
+
+            <Button
+                android:id="@+id/american_btn"
+                style="@style/CuisineButton"
+                android:text="AMERICAN"/>
+
+            <Button
+                android:id="@+id/greek_btn"
+                style="@style/CuisineButton"
+                android:text="GREEK"/>
+
+            <Button
+                android:id="@+id/mediterranean_btn"
+                style="@style/CuisineButton"
+                android:text="MEDITERRANEAN"/>
+        </GridLayout>
+
+        <!-- Next Button -->
+        <Button
+            android:id="@+id/next_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cuisine_grid"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF9A04"
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/button_orange"/>
+
+        <!-- Skip Button -->
+        <Button
+            android:id="@+id/skip_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/next_btn"
+            android:layout_marginTop="12dp"
+            android:text="Skip"
+            android:textColor="#A0A0A0"
+            android:background="@drawable/rounded_button_white"/>
+    </RelativeLayout>
+</ScrollView>

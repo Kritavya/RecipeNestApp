@@ -13,11 +13,11 @@ public class OnboardingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
 
-        // Get references to the UI elements
+
         Button btnGetStarted = findViewById(R.id.btn_get_started);
         TextView tvLoginLink = findViewById(R.id.tv_login_link);
 
-        // Using lambda expressions for cleaner code
+
         btnGetStarted.setOnClickListener(v -> {
             startActivity(new Intent(this, OnboardingActivity2.class));
         });

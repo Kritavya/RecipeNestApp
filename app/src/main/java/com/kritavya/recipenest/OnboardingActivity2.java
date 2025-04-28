@@ -13,7 +13,7 @@ public class OnboardingActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding2);
 
-        // Next Button (Goes to next onboarding screen, currently MainActivity)
+
         Button btnNext = findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -24,12 +24,12 @@ public class OnboardingActivity2 extends AppCompatActivity {
             }
         });
 
-        // Skip Button (Goes directly to Login Page)
+
         Button btnSkip = findViewById(R.id.btn_skip);
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OnboardingActivity2.this, LoginActivity.class);
+                Intent intent = new Intent(OnboardingActivity2.this, SignupActivity.class);
                 startActivity(intent);
                 finish();
             }
