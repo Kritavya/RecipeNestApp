@@ -11,7 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -20,11 +31,19 @@ public class SignupActivity extends AppCompatActivity {
     private TextView tvLogin;
     private ImageView ivToggle;
     private boolean isPasswordVisible = false;
+    
+    // Firebase
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        
+        // Initialize Firebase Auth and Firestore
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Initializing views
         etFullName = findViewById(R.id.et_fullname);
@@ -78,14 +97,7 @@ public class SignupActivity extends AppCompatActivity {
                     etPassword.setError("Password must be at least 6 characters");
                     etPassword.requestFocus();
                 } else {
-
-                    Toast.makeText(SignupActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-
-
-                    Intent intent = new Intent(SignupActivity.this, PersonalizationActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    finish();
+                    registerUser(fullName, email, password);
                 }
             }
         });
@@ -99,5 +111,47 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
+    }
+    
+    private void registerUser(String fullName, String email, String password) {
+        btnRegister.setEnabled(false);
+        
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign up success
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            
+                            // Save additional user information in Firestore
+                            if (user != null) {
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("fullName", fullName);
+                                userData.put("email", email);
+                                userData.put("createdAt", System.currentTimeMillis());
+                                
+                                db.collection("users")
+                                        .document(user.getUid())
+                                        .set(userData)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(SignupActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(SignupActivity.this, PersonalizationActivity.class);
+                                            startActivity(intent);
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            btnRegister.setEnabled(true);
+                                            Toast.makeText(SignupActivity.this, "Error storing user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                        } else {
+                            // If sign up fails, display a message to the user.
+                            btnRegister.setEnabled(true);
+                            Toast.makeText(SignupActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
