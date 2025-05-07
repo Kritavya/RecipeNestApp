@@ -164,8 +164,9 @@ public class MainActivity extends AppCompatActivity {
         });
         
         navAdd.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "Add Recipe", Toast.LENGTH_SHORT).show();
-            // Implement add recipe functionality
+            // Launch Create Recipe Activity
+            Intent intent = new Intent(MainActivity.this, CreateRecipeActivity.class);
+            startActivity(intent);
         });
         
         navSaved.setOnClickListener(v -> {

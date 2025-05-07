@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F8F8F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F8F8F8"
+        android:paddingHorizontal="16dp">
+
+        <!-- Back button and title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btnBackArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_back_arrow"
+                android:background="@drawable/circle_light_background"
+                android:padding="8dp"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create New Recipe"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Step indicators -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Step 1 (completed) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_active"
+                android:text="1"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#FF9A04"/>
+
+            <!-- Step 2 (current) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_active"
+                android:text="2"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 3 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="3"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 4 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="4"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 5 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="5"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <!-- Recipe Image Preview -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/recipeImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ramen_sample"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Indicator Dot -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+            
+            <View
+                android:layout_width="64dp"
+                android:layout_height="4dp"
+                android:background="#DDDDDD"/>
+        </LinearLayout>
+
+        <!-- Ingredients Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredients"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Ingredient Input Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/etIngredientName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Enter an ingredients"
+                android:textSize="16sp"/>
+
+            <Spinner
+                android:id="@+id/spinnerQuantity"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_edit_text"
+                android:paddingHorizontal="16dp"
+                android:spinnerMode="dropdown" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_down"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginStart="-32dp"/>
+        </LinearLayout>
+
+        <!-- Add New Ingredient Button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <Button
+                android:id="@+id/btnAddIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:text="+ Add new ingredients"
+                android:textColor="#777777"
+                android:textAllCaps="false"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dotted_border"/>
+        </FrameLayout>
+
+        <!-- How-to Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="How-to"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textColor="#FF9A04"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Instruction Item 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_drag_handle"
+                    android:padding="4dp"/>
+            </FrameLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Enter instructions"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Instruction Item 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_drag_handle"
+                    android:padding="4dp"/>
+            </FrameLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Enter instructions"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Add Header Button -->
+        <Button
+            android:id="@+id/btnAddHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Add Header"
+            android:textColor="#FF9A04"
+            android:textAllCaps="false"
+            android:paddingStart="0dp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Instruction Item 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_drag_handle"
+                    android:padding="4dp"/>
+            </FrameLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Enter instructions"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <!-- Add New Instruction Button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <Button
+                android:id="@+id/btnAddInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:text="+ Add new instructions"
+                android:textColor="#777777"
+                android:textAllCaps="false"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dotted_border"/>
+        </FrameLayout>
+        
+        <!-- Continue Button -->
+        <Button
+            android:id="@+id/btnContinueStep2"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/rounded_button"
+            android:text="Continue"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"/>
+    </LinearLayout>
+</ScrollView> 

@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.kritavya.recipenest" />
+                  <option name="mobileSdkAppId" value="1:226145575302:android:0cd65affbb4ac81afbcc07" />
+                  <option name="projectId" value="recipenest-5cb61" />
+                  <option name="projectNumber" value="226145575302" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

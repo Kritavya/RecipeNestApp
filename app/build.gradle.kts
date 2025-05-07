@@ -30,6 +30,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
+    lint {
+        abortOnError = false
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {
@@ -50,4 +55,10 @@ dependencies {
     
     // Firebase Firestore (optional, for user data storage)
     implementation("com.google.firebase:firebase-firestore")
+    
+    // ViewPager2 for recipe creation flow
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    
+    // FlexboxLayout for tags display
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

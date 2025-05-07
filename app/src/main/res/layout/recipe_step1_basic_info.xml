@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F8F8F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F8F8F8"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="80dp">
+
+        <!-- Back button and title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btnBackArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_back_arrow"
+                android:background="@drawable/circle_light_background"
+                android:padding="8dp"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create New Recipe"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Step indicators -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Step 1 (current) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_active"
+                android:text="1"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 2 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="2"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 3 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="3"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 4 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="4"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+            <!-- Line connector -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD"/>
+
+            <!-- Step 5 (upcoming) -->
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/dot_inactive"
+                android:text="5"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <!-- Upload Image Area -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/uploadImageArea"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Dotted Border Background -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dotted_border" />
+
+            <!-- Upload Content -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@android:drawable/ic_menu_upload" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Upload Image"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="(You can upload up to 5 images)"
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            
+            <!-- Image Preview (initially hidden) -->
+            <ImageView
+                android:id="@+id/recipeImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Indicator Dot -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+            
+            <View
+                android:layout_width="64dp"
+                android:layout_height="4dp"
+                android:background="#DDDDDD"/>
+        </LinearLayout>
+
+        <!-- Recipe Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipe Name"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etRecipeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="16dp"
+            android:hint="Chicken Ramen"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description (Optional)"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etRecipeDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="16dp"
+            android:hint="Enter the detail of your recipe"
+            android:textSize="16sp"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:minLines="3"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Preparation Time -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preparation Time"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <!-- Prep Time -->
+            <EditText
+                android:id="@+id/etPrepTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Prep Time (min)"
+                android:textSize="16sp"
+                android:inputType="number"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Cook Time -->
+            <EditText
+                android:id="@+id/etCookTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="16dp"
+                android:hint="Cook Time (min)"
+                android:textSize="16sp"
+                android:inputType="number"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Continue Button -->
+        <Button
+            android:id="@+id/btnContinueStep1"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/rounded_button"
+            android:text="Continue"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"/>
+
+    </LinearLayout>
+</ScrollView> 

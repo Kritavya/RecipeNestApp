@@ -4,6 +4,9 @@
         <!-- Ensure Material 3 button tinting is fully disabled -->
         <item name="buttonStyle">@style/CustomButtonStyle</item>
         <item name="materialButtonStyle">@style/CustomButtonStyle</item>
+        <!-- Set status bar color -->
+        <item name="android:statusBarColor">#F8F8F8</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.RecipeNest" parent="Base.Theme.Figma" />

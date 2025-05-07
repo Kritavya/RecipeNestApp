@@ -5,7 +5,8 @@
     android:orientation="horizontal"
     android:background="@android:color/white"
     android:elevation="8dp"
-    android:paddingVertical="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp"
     android:paddingHorizontal="4dp"
     android:gravity="center">
 
@@ -98,7 +99,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/export"
+            android:src="@drawable/saved"
             android:tint="#AAAAAA" />
 
         <TextView
