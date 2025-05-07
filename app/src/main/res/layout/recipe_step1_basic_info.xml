@@ -145,6 +145,7 @@
 
             <!-- Upload Content -->
             <LinearLayout
+                android:id="@+id/uploadTextContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -211,7 +212,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_edit_text"
             android:padding="16dp"
-            android:hint="Chicken Ramen"
+            android:hint="Enter your recipe name"
             android:textSize="16sp"
             android:inputType="text"
             android:layout_marginBottom="24dp" />
@@ -238,49 +239,6 @@
             android:gravity="top"
             android:minLines="3"
             android:layout_marginBottom="24dp" />
-
-        <!-- Preparation Time -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Preparation Time"
-            android:textColor="#333333"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
-
-            <!-- Prep Time -->
-            <EditText
-                android:id="@+id/etPrepTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_edit_text"
-                android:padding="16dp"
-                android:hint="Prep Time (min)"
-                android:textSize="16sp"
-                android:inputType="number"
-                android:layout_marginEnd="8dp" />
-
-            <!-- Cook Time -->
-            <EditText
-                android:id="@+id/etCookTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_edit_text"
-                android:padding="16dp"
-                android:hint="Cook Time (min)"
-                android:textSize="16sp"
-                android:inputType="number"
-                android:layout_marginStart="8dp" />
-        </LinearLayout>
 
         <!-- Continue Button -->
         <Button

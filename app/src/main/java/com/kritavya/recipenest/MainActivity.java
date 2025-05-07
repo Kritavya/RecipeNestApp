@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -78,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             userName = fullName; // No space found, use full name
                         }
+                        
+                        // Update Firebase Auth display name if it's not set
+                        if (currentUser.getDisplayName() == null || currentUser.getDisplayName().isEmpty()) {
+                            currentUser.updateProfile(new UserProfileChangeRequest.Builder()
+                                .setDisplayName(fullName)
+                                .build());
+                        }
                     }
                 } else if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
                     // Use display name if available as fallback
@@ -90,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
                         userName = email.substring(0, atIndex);
                         // Capitalize first letter
                         userName = userName.substring(0, 1).toUpperCase() + userName.substring(1);
+                        
+                        // Update Firebase Auth display name if it's not set
+                        currentUser.updateProfile(new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userName)
+                            .build());
                     } else {
                         userName = email;
                     }
@@ -110,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
                     if (atIndex > 0) {
                         userName = email.substring(0, atIndex);
                         userName = userName.substring(0, 1).toUpperCase() + userName.substring(1);
+                        
+                        // Update Firebase Auth display name if it's not set
+                        currentUser.updateProfile(new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userName)
+                            .build());
                     } else {
                         userName = email;
                     }

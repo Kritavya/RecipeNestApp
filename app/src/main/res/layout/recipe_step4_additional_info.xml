@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create New Recipe"
+                android:text="Additional Information"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -144,217 +144,156 @@
                 android:src="@drawable/ramen_sample"/>
         </androidx.cardview.widget.CardView>
 
-        <!-- Indicator Dot -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="24dp">
-            
-            <View
-                android:layout_width="64dp"
-                android:layout_height="4dp"
-                android:background="#DDDDDD"/>
-        </LinearLayout>
-
-        <!-- Categories Section -->
+        <!-- Cooking Times Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Categories"
+            android:text="Cooking Times"
             android:textColor="#333333"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp" />
 
-        <!-- Search Categories -->
-        <EditText
-            android:id="@+id/etSearchCategories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="12dp"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:hint="Search Categories"
-            android:textSize="16sp"
-            android:inputType="text"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Category Options -->
-        <!-- Cuisine Types -->
+        <!-- Prep Time -->
         <LinearLayout
-            android:id="@+id/cuisineTypes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="16dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prep Time (min):"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/etPrepTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cuisine Types"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:inputType="number"
+                android:hint="30"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Meal Types -->
+        <!-- Cook Time -->
         <LinearLayout
-            android:id="@+id/mealTypes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="16dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cook Time (min):"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/etCookTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Meal Types"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:inputType="number"
+                android:hint="45"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Diet Preferences -->
+        <!-- Servings -->
         <LinearLayout
-            android:id="@+id/dietPreferences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Diet Preferences"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
-        </LinearLayout>
-
-        <!-- Cooking Method -->
-        <LinearLayout
-            android:id="@+id/cookingMethod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cooking Method"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
-        </LinearLayout>
-
-        <!-- Occasions -->
-        <LinearLayout
-            android:id="@+id/occasions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Occasions"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
-        </LinearLayout>
-
-        <!-- Ingredients -->
-        <LinearLayout
-            android:id="@+id/ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Ingredients"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
-        </LinearLayout>
-
-        <!-- Skill Level -->
-        <LinearLayout
-            android:id="@+id/skillLevel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="16dp"
-            android:gravity="center_vertical"
             android:layout_marginBottom="24dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servings:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/etServings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Skill Level"
-                android:textColor="#333333"
-                android:textSize="16sp" />
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:inputType="number"
+                android:hint="4"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_right" />
+        <!-- Recipe Details Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipe Details"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Difficulty Level -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Difficulty:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spinnerDifficulty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Cuisine Type -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cuisine Type:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spinnerCuisineType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
 
         <!-- Continue Button -->

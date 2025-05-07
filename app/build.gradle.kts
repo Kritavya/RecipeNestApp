@@ -56,9 +56,25 @@ dependencies {
     // Firebase Firestore (optional, for user data storage)
     implementation("com.google.firebase:firebase-firestore")
     
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database")
+    
+    // Firebase Storage (for images and videos)
+    implementation("com.google.firebase:firebase-storage")
+    
+    // Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    
     // ViewPager2 for recipe creation flow
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     
     // FlexboxLayout for tags display
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    
+    // Cloudinary for image hosting
+    implementation("com.cloudinary:cloudinary-android:2.2.0")
+    
+    // UCrop for image cropping (from JitPack)
+    implementation("com.github.yalantis:ucrop:2.2.8-native")
 }

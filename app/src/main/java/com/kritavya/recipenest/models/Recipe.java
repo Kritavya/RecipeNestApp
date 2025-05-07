@@ -1,36 +1,50 @@
 package com.kritavya.recipenest.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Serializable {
     private String id;
     private String name;
     private String description;
-    private List<String> ingredients;
-    private List<String> instructions;
-    private String prepTime;
-    private String cookTime;
-    private String servings;
-    private List<String> imageUrls;
     private String userId;
-    private long timestamp;
-    private String category;
-    private List<String> tags;
-    private List<String> allergens;
-    private String difficulty;
-    private int calories;
+    private String userName;
+    private String userPhotoUrl;
+    private List<String> imageUrls;
+    private List<String> categories;
+    private List<Ingredient> ingredients;
+    private List<Instruction> instructions;
+    private int prepTime; // in minutes
+    private int cookTime; // in minutes
+    private int servings;
+    private String difficulty; // "easy", "medium", "hard"
+    private boolean isPublic;
+    private float rating;
+    private int ratingCount;
+    private Date createdAt;
+    private Date updatedAt;
+    private String videoUrl;
+    private String notes;
+    private String cuisineType;
+    private boolean isFavorite;
 
-    // Empty constructor for Firebase
     public Recipe() {
-        ingredients = new ArrayList<>();
-        instructions = new ArrayList<>();
-        imageUrls = new ArrayList<>();
-        tags = new ArrayList<>();
-        allergens = new ArrayList<>();
+        // Default constructor required for Firebase
+        this.imageUrls = new ArrayList<>();
+        this.categories = new ArrayList<>();
+        this.ingredients = new ArrayList<>();
+        this.instructions = new ArrayList<>();
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+        this.rating = 0.0f;
+        this.ratingCount = 0;
+        this.isPublic = true;
+        this.isFavorite = false;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public String getId() {
         return id;
     }
@@ -55,44 +69,28 @@ public class Recipe {
         this.description = description;
     }
 
-    public List<String> getIngredients() {
-        return ingredients;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public List<String> getInstructions() {
-        return instructions;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setInstructions(List<String> instructions) {
-        this.instructions = instructions;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPrepTime() {
-        return prepTime;
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
     }
 
-    public void setPrepTime(String prepTime) {
-        this.prepTime = prepTime;
-    }
-
-    public String getCookTime() {
-        return cookTime;
-    }
-
-    public void setCookTime(String cookTime) {
-        this.cookTime = cookTime;
-    }
-
-    public String getServings() {
-        return servings;
-    }
-
-    public void setServings(String servings) {
-        this.servings = servings;
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
     }
 
     public List<String> getImageUrls() {
@@ -103,44 +101,64 @@ public class Recipe {
         this.imageUrls = imageUrls;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getImageUrl() {
+        // Return the first image URL if available, otherwise return empty string
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            return imageUrls.get(0);
+        }
+        return "";
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public List<String> getCategories() {
+        return categories;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public String getCategory() {
-        return category;
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public List<Instruction> getInstructions() {
+        return instructions;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public void setInstructions(List<Instruction> instructions) {
+        this.instructions = instructions;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public int getPrepTime() {
+        return prepTime;
     }
 
-    public List<String> getAllergens() {
-        return allergens;
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
     }
 
-    public void setAllergens(List<String> allergens) {
-        this.allergens = allergens;
+    public int getCookTime() {
+        return cookTime;
+    }
+
+    public void setCookTime(int cookTime) {
+        this.cookTime = cookTime;
+    }
+
+    public int getCookingTime() {
+        return cookTime;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 
     public String getDifficulty() {
@@ -151,11 +169,216 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public int getCalories() {
-        return calories;
+    public boolean isPublic() {
+        return isPublic;
     }
 
-    public void setCalories(int calories) {
-        this.calories = calories;
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getCuisineType() {
+        return cuisineType;
+    }
+
+    public void setCuisineType(String cuisineType) {
+        this.cuisineType = cuisineType;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    // Helper methods
+    public void addImageUrl(String imageUrl) {
+        if (this.imageUrls == null) {
+            this.imageUrls = new ArrayList<>();
+        }
+        this.imageUrls.add(imageUrl);
+    }
+
+    public void addCategory(String category) {
+        if (this.categories == null) {
+            this.categories = new ArrayList<>();
+        }
+        this.categories.add(category);
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        if (this.ingredients == null) {
+            this.ingredients = new ArrayList<>();
+        }
+        this.ingredients.add(ingredient);
+    }
+
+    public void addInstruction(Instruction instruction) {
+        if (this.instructions == null) {
+            this.instructions = new ArrayList<>();
+        }
+        this.instructions.add(instruction);
+    }
+
+    // Get total cooking time (prep + cook)
+    public int getTotalTime() {
+        return prepTime + cookTime;
+    }
+
+    // Ingredient inner class
+    public static class Ingredient implements Serializable {
+        private String id;
+        private String name;
+        private String amount;
+        private String unit;
+
+        public Ingredient() {
+            // Default constructor for Firebase
+        }
+
+        public Ingredient(String name, String amount, String unit) {
+            this.name = name;
+            this.amount = amount;
+            this.unit = unit;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
+    }
+
+    // Instruction inner class
+    public static class Instruction implements Serializable {
+        private String id;
+        private String title;
+        private List<String> steps;
+        private int timeInMinutes;
+
+        public Instruction() {
+            // Default constructor for Firebase
+            this.steps = new ArrayList<>();
+        }
+
+        public Instruction(String title) {
+            this.title = title;
+            this.steps = new ArrayList<>();
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public List<String> getSteps() {
+            return steps;
+        }
+
+        public void setSteps(List<String> steps) {
+            this.steps = steps;
+        }
+
+        public void addStep(String step) {
+            if (this.steps == null) {
+                this.steps = new ArrayList<>();
+            }
+            this.steps.add(step);
+        }
+
+        public int getTimeInMinutes() {
+            return timeInMinutes;
+        }
+
+        public void setTimeInMinutes(int timeInMinutes) {
+            this.timeInMinutes = timeInMinutes;
+        }
     }
 } 

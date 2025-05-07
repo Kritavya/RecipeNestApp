@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create New Recipe"
+                android:text="Add Instructions"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -128,13 +128,84 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
+        <!-- Add instruction section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Instruction"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Instruction Title -->
+        <EditText
+            android:id="@+id/etInstructionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Instruction title (e.g., 'Prepare the sauce')"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Instruction Step -->
+        <EditText
+            android:id="@+id/etInstructionStep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Instruction step"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="16dp"
+            android:minLines="2"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Add button -->
+        <Button
+            android:id="@+id/btnAddStep"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Add Step"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/rounded_button"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Instructions list container -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructions"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/instructionsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Continue button -->
+        <Button
+            android:id="@+id/btnContinueStep3"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Continue"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/rounded_button"
+            android:layout_marginTop="16dp"/>
+
         <!-- Recipe Image Preview -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="24dp">
 
             <ImageView
                 android:id="@+id/recipeImagePreview"
@@ -143,91 +214,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ramen_sample"/>
         </androidx.cardview.widget.CardView>
-
-        <!-- Indicator Dot -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="24dp">
-            
-            <View
-                android:layout_width="64dp"
-                android:layout_height="4dp"
-                android:background="#DDDDDD"/>
-        </LinearLayout>
-
-        <!-- Video Upload Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Video (Optional)"
-            android:textColor="#333333"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Video Upload Area -->
-        <FrameLayout
-            android:id="@+id/videoUploadArea"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="24dp">
-
-            <!-- Dotted Border Background -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/dotted_border" />
-
-            <!-- Upload Content -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@android:drawable/ic_menu_camera" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Upload Video"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="(Video size limit is 1 GB)"
-                    android:textColor="#888888"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Video Preview (initially hidden) -->
-            <VideoView
-                android:id="@+id/videoPreview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-        </FrameLayout>
-
-        <!-- Continue Button -->
-        <Button
-            android:id="@+id/btnContinueStep3"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/rounded_button"
-            android:text="Continue"
-            android:textColor="#FFFFFF"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:layout_marginTop="24dp"/>
 
     </LinearLayout>
 </ScrollView> 
