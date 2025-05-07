@@ -1,7 +1,9 @@
 package com.kritavya.recipenest;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,22 +58,51 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             progressBar.setVisibility(ProgressBar.VISIBLE);
         }
         
+        // Add timeout handler
+        final Handler timeoutHandler = new Handler();
+        final Runnable timeoutRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
+                    progressBar.setVisibility(ProgressBar.GONE);
+                    btnSubmit.setEnabled(true);
+                    Toast.makeText(ForgotPasswordActivity.this, "Request timed out. Please check your internet connection.", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        
+        // Set 15-second timeout
+        timeoutHandler.postDelayed(timeoutRunnable, 15000);
+        
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        // Cancel timeout handler
+                        timeoutHandler.removeCallbacks(timeoutRunnable);
+                        
                         if (progressBar != null) {
                             progressBar.setVisibility(ProgressBar.GONE);
                         }
                         
                         if (task.isSuccessful()) {
-                            Toast.makeText(ForgotPasswordActivity.this, "Reset link sent to your email!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPasswordActivity.this, "Reset link sent to your email!", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             btnSubmit.setEnabled(true);
-                            Toast.makeText(ForgotPasswordActivity.this, "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPasswordActivity.this, "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
+                })
+                .addOnFailureListener(e -> {
+                    // Cancel timeout handler
+                    timeoutHandler.removeCallbacks(timeoutRunnable);
+                    
+                    if (progressBar != null) {
+                        progressBar.setVisibility(ProgressBar.GONE);
+                    }
+                    btnSubmit.setEnabled(true);
+                    Toast.makeText(ForgotPasswordActivity.this, "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 }
