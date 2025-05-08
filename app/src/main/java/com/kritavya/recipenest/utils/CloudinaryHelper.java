@@ -2,14 +2,26 @@ package com.kritavya.recipenest.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Helper class for Cloudinary operations
@@ -112,6 +124,202 @@ public class CloudinaryHelper {
 
         return requestId;
     }
+    
+    /**
+     * Delete an image from Cloudinary by its URL
+     * 
+     * This method uses a direct HTTP request to Cloudinary's REST API to delete an image
+     * 
+     * @param context Application context
+     * @param imageUrl The URL of the image to delete
+     * @param callback Interface to handle delete results
+     */
+    public static void deleteImage(Context context, String imageUrl, CloudinaryDeleteCallback callback) {
+        if (!isInitialized) {
+            initCloudinary(context);
+            
+            if (!isInitialized) {
+                if (callback != null) {
+                    callback.onError("Failed to initialize Cloudinary. Check credentials.");
+                }
+                return;
+            }
+        }
+        
+        // Extract the public_id from the URL
+        String publicId = extractPublicIdFromUrl(imageUrl);
+        if (publicId == null) {
+            if (callback != null) {
+                callback.onError("Invalid Cloudinary URL format");
+            }
+            return;
+        }
+        
+        // Log the deletion attempt
+        Log.d(TAG, "Attempting to delete Cloudinary image with public ID: " + publicId);
+        
+        // Get credentials
+        String cloudName = ConfigHelper.getConfigValue("cloudinary.cloud_name", "").trim();
+        String apiKey = ConfigHelper.getConfigValue("cloudinary.api_key", "").trim();
+        String apiSecret = ConfigHelper.getConfigValue("cloudinary.api_secret", "").trim();
+        
+        // Execute the deletion in background thread
+        new DeleteCloudinaryImageTask(cloudName, apiKey, apiSecret, publicId, callback).execute();
+    }
+    
+    /**
+     * AsyncTask to delete a Cloudinary image using the REST API
+     */
+    private static class DeleteCloudinaryImageTask extends AsyncTask<Void, Void, Boolean> {
+        private String cloudName;
+        private String apiKey;
+        private String apiSecret;
+        private String publicId;
+        private CloudinaryDeleteCallback callback;
+        private String errorMessage;
+        
+        public DeleteCloudinaryImageTask(String cloudName, String apiKey, String apiSecret, 
+                                        String publicId, CloudinaryDeleteCallback callback) {
+            this.cloudName = cloudName;
+            this.apiKey = apiKey;
+            this.apiSecret = apiSecret;
+            this.publicId = publicId;
+            this.callback = callback;
+        }
+        
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                // Generate timestamp and signature
+                String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                
+                // Create the string to sign
+                String toSign = "public_id=" + publicId + "&timestamp=" + timestamp + apiSecret;
+                
+                // Generate signature
+                String signature = generateSHA1(toSign);
+                
+                // Create API URL
+                String apiUrl = "https://api.cloudinary.com/v1_1/" + cloudName + "/image/destroy";
+                
+                // Create connection
+                URL url = new URL(apiUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+                
+                // Create JSON request body
+                JSONObject jsonParam = new JSONObject();
+                jsonParam.put("public_id", publicId);
+                jsonParam.put("api_key", apiKey);
+                jsonParam.put("timestamp", timestamp);
+                jsonParam.put("signature", signature);
+                
+                // Send request
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+                
+                // Get response
+                int responseCode = conn.getResponseCode();
+                StringBuilder response = new StringBuilder();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                        String responseLine;
+                        while ((responseLine = br.readLine()) != null) {
+                            response.append(responseLine.trim());
+                        }
+                    }
+                    
+                    // Check response for success
+                    JSONObject jsonResponse = new JSONObject(response.toString());
+                    return jsonResponse.optString("result", "").equals("ok");
+                } else {
+                    // Error response
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8))) {
+                        String responseLine;
+                        while ((responseLine = br.readLine()) != null) {
+                            response.append(responseLine.trim());
+                        }
+                    }
+                    errorMessage = "API Error: " + responseCode + " " + response.toString();
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error deleting Cloudinary image: " + e.getMessage(), e);
+                errorMessage = "Error: " + e.getMessage();
+                return false;
+            }
+        }
+        
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (callback != null) {
+                if (success) {
+                    Log.d(TAG, "Cloudinary image deleted successfully: " + publicId);
+                    callback.onSuccess();
+                } else {
+                    Log.e(TAG, "Failed to delete Cloudinary image: " + errorMessage);
+                    callback.onError(errorMessage);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Generate SHA1 hash
+     */
+    private static String generateSHA1(String input) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("SHA-1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : result) {
+            sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * Extract the public_id from a Cloudinary URL
+     * @param url The Cloudinary URL
+     * @return The public_id of the image
+     */
+    private static String extractPublicIdFromUrl(String url) {
+        if (url == null || !url.contains("cloudinary.com")) {
+            return null;
+        }
+        
+        try {
+            // Example URL: https://res.cloudinary.com/drpug7bvq/image/upload/v1685421234/recipe_images/abcdef123.jpg
+            // We need to extract: recipe_images/abcdef123
+            
+            String[] parts = url.split("/upload/");
+            if (parts.length < 2) {
+                return null;
+            }
+            
+            String afterUpload = parts[1];
+            // Remove version if present (v1234567890/)
+            if (afterUpload.matches("v\\d+/.*")) {
+                afterUpload = afterUpload.replaceFirst("v\\d+/", "");
+            }
+            
+            // Remove file extension
+            int lastDotIndex = afterUpload.lastIndexOf(".");
+            if (lastDotIndex > 0) {
+                afterUpload = afterUpload.substring(0, lastDotIndex);
+            }
+            
+            return afterUpload;
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting public ID: " + e.getMessage());
+            return null;
+        }
+    }
 
     /**
      * Interface to handle Cloudinary upload callbacks
@@ -120,6 +328,14 @@ public class CloudinaryHelper {
         void onUploadStarted();
         void onProgressUpdate(double progress);
         void onSuccess(String url, String publicId);
+        void onError(String errorMessage);
+    }
+    
+    /**
+     * Interface to handle Cloudinary delete callbacks
+     */
+    public interface CloudinaryDeleteCallback {
+        void onSuccess();
         void onError(String errorMessage);
     }
 } 

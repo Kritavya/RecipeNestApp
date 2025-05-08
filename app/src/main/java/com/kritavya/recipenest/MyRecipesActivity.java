@@ -2,11 +2,13 @@ package com.kritavya.recipenest;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kritavya.recipenest.adapters.RecipeAdapter;
 import com.kritavya.recipenest.models.Recipe;
+import com.kritavya.recipenest.utils.CloudinaryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +67,17 @@ public class MyRecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recipes);
 
+        // Handle system UI for proper display with navigation bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Light navigation bar for Android O and above
+                int flags = getWindow().getDecorView().getSystemUiVisibility();
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                getWindow().getDecorView().setSystemUiVisibility(flags);
+            }
+        }
+
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -76,6 +90,9 @@ public class MyRecipesActivity extends AppCompatActivity {
         setupRecipeAdapter();
         setupTabListeners();
         setupBottomNavigation();
+        
+        // Update navigation highlight
+        updateNavHighlight();
         
         // Check user authentication
         checkUserAuthentication();
@@ -322,6 +339,19 @@ public class MyRecipesActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.e(TAG, "Error parsing image URL: " + e.getMessage());
                     }
+                } else if (imageUrl != null && imageUrl.contains("cloudinary.com")) {
+                    // Delete from Cloudinary
+                    CloudinaryHelper.deleteImage(this, imageUrl, new CloudinaryHelper.CloudinaryDeleteCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "Cloudinary image deleted successfully: " + imageUrl);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e(TAG, "Error deleting Cloudinary image: " + errorMessage);
+                        }
+                    });
                 }
             }
         }
@@ -499,6 +529,55 @@ public class MyRecipesActivity extends AppCompatActivity {
         TextView emptyMessage = emptyView.findViewById(R.id.emptyStateMessage);
         if (emptyMessage != null) {
             emptyMessage.setText(message);
+        }
+    }
+    
+    private void updateNavHighlight() {
+        // Find all ImageViews and TextViews in bottom navigation
+        ImageView homeIcon = navHome.findViewById(android.R.id.icon);
+        TextView homeText = navHome.findViewById(android.R.id.text1);
+        ImageView searchIcon = navSearch.findViewById(android.R.id.icon);
+        TextView searchText = navSearch.findViewById(android.R.id.text1);
+        ImageView savedIcon = navSaved.findViewById(android.R.id.icon);
+        TextView savedText = navSaved.findViewById(android.R.id.text1);
+        ImageView profileIcon = navProfile.findViewById(android.R.id.icon);
+        TextView profileText = navProfile.findViewById(android.R.id.text1);
+        
+        // Get all ImageViews and TextViews in bottom navigation directly
+        if (homeIcon == null) {
+            homeIcon = (ImageView) navHome.getChildAt(0);
+            homeText = (TextView) navHome.getChildAt(1);
+            searchIcon = (ImageView) navSearch.getChildAt(0);
+            searchText = (TextView) navSearch.getChildAt(1);
+            savedIcon = (ImageView) navSaved.getChildAt(0);
+            savedText = (TextView) navSaved.getChildAt(1);
+            profileIcon = (ImageView) navProfile.getChildAt(0);
+            profileText = (TextView) navProfile.getChildAt(1);
+        }
+        
+        // Set colors (regular and highlighted)
+        int regularColor = getResources().getColor(android.R.color.darker_gray);
+        int highlightColor = getResources().getColor(R.color.colorAccent);
+
+        // Set "Saved" tab as highlighted and others as regular
+        if (homeIcon != null && homeText != null) {
+            homeIcon.setColorFilter(regularColor);
+            homeText.setTextColor(regularColor);
+        }
+        
+        if (searchIcon != null && searchText != null) {
+            searchIcon.setColorFilter(regularColor);
+            searchText.setTextColor(regularColor);
+        }
+        
+        if (savedIcon != null && savedText != null) {
+            savedIcon.setColorFilter(highlightColor);
+            savedText.setTextColor(highlightColor);
+        }
+        
+        if (profileIcon != null && profileText != null) {
+            profileIcon.setColorFilter(regularColor);
+            profileText.setTextColor(regularColor);
         }
     }
     
