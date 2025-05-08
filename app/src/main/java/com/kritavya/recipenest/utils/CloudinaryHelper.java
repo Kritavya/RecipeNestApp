@@ -289,34 +289,49 @@ public class CloudinaryHelper {
      * @return The public_id of the image
      */
     private static String extractPublicIdFromUrl(String url) {
-        if (url == null || !url.contains("cloudinary.com")) {
+        if (url == null || url.isEmpty()) {
             return null;
         }
         
         try {
-            // Example URL: https://res.cloudinary.com/drpug7bvq/image/upload/v1685421234/recipe_images/abcdef123.jpg
-            // We need to extract: recipe_images/abcdef123
+            // Expected format: https://res.cloudinary.com/cloud_name/image/upload/v123456789/folder/image_name.jpg
+            // We need to extract: folder/image_name
             
-            String[] parts = url.split("/upload/");
+            // Split URL by domain first
+            String[] parts = url.split("cloudinary\\.com/");
             if (parts.length < 2) {
                 return null;
             }
             
-            String afterUpload = parts[1];
-            // Remove version if present (v1234567890/)
-            if (afterUpload.matches("v\\d+/.*")) {
-                afterUpload = afterUpload.replaceFirst("v\\d+/", "");
+            // Get the path after the domain
+            String path = parts[1];
+            
+            // Split by /upload/
+            String[] uploadParts = path.split("/upload/");
+            if (uploadParts.length < 2) {
+                return null;
             }
             
-            // Remove file extension
-            int lastDotIndex = afterUpload.lastIndexOf(".");
-            if (lastDotIndex > 0) {
-                afterUpload = afterUpload.substring(0, lastDotIndex);
+            // Get the path after /upload/
+            String uploadPath = uploadParts[1];
+            
+            // Remove the version number if present (v123456789/)
+            if (uploadPath.startsWith("v")) {
+                int versionEnd = uploadPath.indexOf('/');
+                if (versionEnd > 0) {
+                    uploadPath = uploadPath.substring(versionEnd + 1);
+                }
             }
             
-            return afterUpload;
+            // Remove file extension if present
+            int extensionStart = uploadPath.lastIndexOf('.');
+            if (extensionStart > 0) {
+                uploadPath = uploadPath.substring(0, extensionStart);
+            }
+            
+            return uploadPath;
         } catch (Exception e) {
-            Log.e(TAG, "Error extracting public ID: " + e.getMessage());
+            Log.e(TAG, "Error extracting public ID from URL: " + e.getMessage());
             return null;
         }
     }

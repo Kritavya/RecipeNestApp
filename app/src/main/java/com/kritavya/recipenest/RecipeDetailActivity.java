@@ -40,7 +40,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private TextView tvRecipeName, tvRating, tvDate, tvTime;
     private LinearLayout categoryContainer, ingredientsContainer, instructionsContainer;
     private Button btnAddToMyRecipes, btnDownloadRecipe, btnWriteReview;
-    private TextView btnSeeMoreIngredients, btnSeeMoreInstructions;
     private ImageView[] ratingStars = new ImageView[5];
     
     private DatabaseReference mDatabase;
@@ -80,7 +79,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
     
     private void initViews() {
-        // Initialize all views
+        // Initialize views
         recipeImage = findViewById(R.id.ivRecipeImage);
         tvRecipeName = findViewById(R.id.tvRecipeName);
         tvRating = findViewById(R.id.tvRating);
@@ -94,9 +93,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         btnAddToMyRecipes = findViewById(R.id.btnAddToMyRecipes);
         btnDownloadRecipe = findViewById(R.id.btnDownloadRecipe);
         btnWriteReview = findViewById(R.id.btnWriteReview);
-        
-        btnSeeMoreIngredients = findViewById(R.id.btnSeeMoreIngredients);
-        btnSeeMoreInstructions = findViewById(R.id.btnSeeMoreInstructions);
         
         // Initialize rating stars
         ratingStars[0] = findViewById(R.id.ratingStar1);

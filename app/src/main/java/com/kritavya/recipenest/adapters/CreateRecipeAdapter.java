@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -161,10 +162,27 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         Button btnContinueStep1 = view.findViewById(R.id.btnContinueStep1);
         if (btnContinueStep1 != null) {
             btnContinueStep1.setOnClickListener(v -> {
+                // Validate required fields
+                if (validateBasicInfo()) {
                 saveBasicInfoData();
                 ((CreateRecipeActivity)context).goToNextStep();
+                }
             });
         }
+    }
+    
+    private boolean validateBasicInfo() {
+        if (etRecipeName == null || etRecipeName.getText().toString().trim().isEmpty()) {
+            Toast.makeText(context, "Please enter a recipe name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (dataListener != null && dataListener.getSelectedImageUris().isEmpty()) {
+            Toast.makeText(context, "Please select an image for your recipe", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        return true;
     }
     
     private void saveBasicInfoData() {
@@ -216,9 +234,20 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         Button continueButton = findContinueButton(view);
         if (continueButton != null) {
             continueButton.setOnClickListener(v -> {
+                // Validate that at least one ingredient is added
+                if (validateIngredients()) {
                 ((CreateRecipeActivity)context).goToNextStep();
+                }
             });
         }
+    }
+    
+    private boolean validateIngredients() {
+        if (recipe == null || recipe.getIngredients() == null || recipe.getIngredients().isEmpty()) {
+            Toast.makeText(context, "Please add at least one ingredient", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
     
     private void addIngredient() {
@@ -308,7 +337,24 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         etInstructionStep = view.findViewById(R.id.etInstructionStep);
         instructionsList = view.findViewById(R.id.instructionsList);
         
-        // Set up add instruction step button
+        // Display the recipe image if available
+        ImageView recipeImagePreview = view.findViewById(R.id.recipeImagePreview);
+        if (recipeImagePreview != null) {
+            if (recipe != null && !recipe.getImageUrls().isEmpty()) {
+                recipeImagePreview.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                    .load(recipe.getImageUrls().get(0))
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(recipeImagePreview);
+            } else if (dataListener != null && !dataListener.getSelectedImageUris().isEmpty()) {
+                recipeImagePreview.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                    .load(dataListener.getSelectedImageUris().get(0))
+                    .into(recipeImagePreview);
+            }
+        }
+        
+        // Set up add step button
         Button btnAddStep = view.findViewById(R.id.btnAddStep);
         if (btnAddStep != null) {
             btnAddStep.setOnClickListener(v -> {
@@ -323,9 +369,20 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         Button continueButton = findContinueButton(view);
         if (continueButton != null) {
             continueButton.setOnClickListener(v -> {
+                // Validate that at least one instruction is added
+                if (validateInstructions()) {
                 ((CreateRecipeActivity)context).goToNextStep();
+                }
             });
         }
+    }
+    
+    private boolean validateInstructions() {
+        if (recipe == null || recipe.getInstructions() == null || recipe.getInstructions().isEmpty()) {
+            Toast.makeText(context, "Please add at least one instruction", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
     
     private void addInstructionStep() {
@@ -340,40 +397,38 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
             return;
         }
         
-        // Check if we already have an instruction with this title
-        Recipe.Instruction existingInstruction = null;
+        // Create new instruction or find existing one with the same title
+        Recipe.Instruction instruction = null;
         if (recipe != null) {
-            for (Recipe.Instruction instruction : recipe.getInstructions()) {
-                if (instruction.getTitle().equals(title)) {
-                    existingInstruction = instruction;
+            // Check if we already have an instruction with this title
+            for (Recipe.Instruction existingInstruction : recipe.getInstructions()) {
+                if (existingInstruction.getTitle().equals(title)) {
+                    instruction = existingInstruction;
                     break;
                 }
             }
         }
         
-        if (existingInstruction != null) {
-            // Add step to existing instruction
-            existingInstruction.addStep(step);
-        } else {
+        if (instruction == null) {
             // Create new instruction
-            Recipe.Instruction instruction = new Recipe.Instruction(title);
-            instruction.addStep(step);
-            
-            // Add to recipe
+            instruction = new Recipe.Instruction(title);
             if (recipe != null) {
                 recipe.addInstruction(instruction);
             }
         }
         
+        // Add step to instruction
+        instruction.addStep(step);
+        
         // Notify listener
-        if (dataListener != null && recipe != null) {
+        if (dataListener != null) {
             dataListener.onRecipeDataChanged(recipe);
         }
         
-        // Clear input fields
+        // Clear step input field but keep the title
         etInstructionStep.setText("");
         
-        // Update the list
+        // Update the display
         displayInstructions();
     }
     
@@ -386,55 +441,48 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         instructionsList.removeAllViews();
         
         // Add each instruction
-        for (Recipe.Instruction instruction : recipe.getInstructions()) {
-            View headerView = layoutInflater.inflate(R.layout.item_instruction_header, instructionsList, false);
-            TextView tvInstructionTitle = headerView.findViewById(R.id.tvInstructionTitle);
-            tvInstructionTitle.setText(instruction.getTitle());
-            
-            instructionsList.addView(headerView);
-            
-            // Add each step
-            for (String step : instruction.getSteps()) {
-                View stepView = layoutInflater.inflate(R.layout.item_instruction_step, instructionsList, false);
-                TextView tvStepText = stepView.findViewById(R.id.tvStepText);
-                ImageButton btnDeleteStep = stepView.findViewById(R.id.btnDeleteStep);
+        if (recipe.getInstructions() != null && !recipe.getInstructions().isEmpty()) {
+            for (int i = 0; i < recipe.getInstructions().size(); i++) {
+                Recipe.Instruction instruction = recipe.getInstructions().get(i);
+                View instructionView = layoutInflater.inflate(R.layout.item_instruction, instructionsList, false);
                 
-                tvStepText.setText(step);
+                // Set instruction title
+                TextView tvTitle = instructionView.findViewById(R.id.tvInstructionTitle);
+                tvTitle.setText(instruction.getTitle());
                 
-                // Handle delete
-                btnDeleteStep.setOnClickListener(v -> {
-                    instruction.getSteps().remove(step);
-                    
-                    // If no steps left, remove the instruction
-                    if (instruction.getSteps().isEmpty()) {
-                        recipe.getInstructions().remove(instruction);
+                // Set instruction steps
+                TextView tvSteps = instructionView.findViewById(R.id.tvInstructionSteps);
+                if (instruction.getSteps() != null && !instruction.getSteps().isEmpty()) {
+                    StringBuilder stepsText = new StringBuilder();
+                    for (int j = 0; j < instruction.getSteps().size(); j++) {
+                        stepsText.append("• ").append(instruction.getSteps().get(j));
+                        if (j < instruction.getSteps().size() - 1) {
+                            stepsText.append("\n");
+                        }
                     }
-                    
-                    // Notify listener
+                    tvSteps.setText(stepsText.toString());
+                }
+                
+                // Delete button
+                ImageButton btnDelete = instructionView.findViewById(R.id.btnDeleteInstruction);
+                if (btnDelete != null) {
+                    final int index = i;
+                    btnDelete.setOnClickListener(v -> {
+                        recipe.getInstructions().remove(index);
+                        displayInstructions();
                     if (dataListener != null) {
                         dataListener.onRecipeDataChanged(recipe);
                     }
-                    
-                    // Update the list
-                    displayInstructions();
-                });
+                    });
+                }
                 
-                instructionsList.addView(stepView);
-            }
-            
-            // Add a divider except for the last instruction
-            if (recipe.getInstructions().indexOf(instruction) < recipe.getInstructions().size() - 1) {
-                View divider = new View(context);
-                divider.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, 8));
-                divider.setBackgroundColor(context.getResources().getColor(R.color.colorLightBackground));
-                instructionsList.addView(divider);
+                // Add to container
+                instructionsList.addView(instructionView);
             }
         }
     }
     
     private void setupAdditionalInfoPage(RecipeViewHolder holder, int position) {
-        // Additional info page setup code
         View view = holder.itemView;
         
         // Get references to views
@@ -445,13 +493,40 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         spinnerDifficulty = view.findViewById(R.id.spinnerDifficulty);
         spinnerCuisineType = view.findViewById(R.id.spinnerCuisineType);
         
+        // Display the recipe image if available
+        ImageView recipeImagePreview = view.findViewById(R.id.recipeImagePreview);
+        if (recipeImagePreview != null) {
+            if (recipe != null && !recipe.getImageUrls().isEmpty()) {
+                recipeImagePreview.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                    .load(recipe.getImageUrls().get(0))
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(recipeImagePreview);
+            } else if (dataListener != null && !dataListener.getSelectedImageUris().isEmpty()) {
+                recipeImagePreview.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                    .load(dataListener.getSelectedImageUris().get(0))
+                    .into(recipeImagePreview);
+            }
+        }
+        
         // Set up spinners
         if (spinnerDifficulty != null) {
             String[] difficulties = new String[]{"Easy", "Medium", "Hard"};
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, 
+            ArrayAdapter<String> difficultyAdapter = new ArrayAdapter<>(context, 
                 android.R.layout.simple_spinner_item, difficulties);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerDifficulty.setAdapter(adapter);
+            difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDifficulty.setAdapter(difficultyAdapter);
+            
+            // Select saved value if exists
+            if (recipe != null && recipe.getDifficulty() != null) {
+                for (int i = 0; i < difficulties.length; i++) {
+                    if (difficulties[i].equals(recipe.getDifficulty())) {
+                        spinnerDifficulty.setSelection(i);
+                        break;
+                    }
+                }
+            }
         }
         
         if (spinnerCuisineType != null) {
@@ -482,10 +557,33 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         Button continueButton = findContinueButton(view);
         if (continueButton != null) {
             continueButton.setOnClickListener(v -> {
+                if (validateAdditionalInfo()) {
                 saveAdditionalInfoData();
                 ((CreateRecipeActivity)context).goToNextStep();
+                }
             });
         }
+    }
+    
+    private boolean validateAdditionalInfo() {
+        if (etPrepTime == null || etPrepTime.getText().toString().trim().isEmpty()) {
+            Toast.makeText(context, "Please enter preparation time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (etCookTime == null || etCookTime.getText().toString().trim().isEmpty()) {
+            Toast.makeText(context, "Please enter cooking time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (etServings == null || etServings.getText().toString().trim().isEmpty()) {
+            Toast.makeText(context, "Please enter number of servings", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        // Note: Video URL is optional
+        
+        return true;
     }
     
     private void saveAdditionalInfoData() {
@@ -522,185 +620,171 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
     }
     
     private void setupReviewPage(RecipeViewHolder holder, int position) {
-        // Review page setup code
         View view = holder.itemView;
         
-        // Set up the review page with recipe data
-        TextView tvRecipeName = view.findViewById(R.id.tvRecipeName);
-        TextView tvIngredientCount = view.findViewById(R.id.tvIngredientCount);
-        TextView tvStepCount = view.findViewById(R.id.tvStepCount);
-        TextView tvTotalTime = view.findViewById(R.id.tvTotalTime);
-        TextView tvEstimatedTime = view.findViewById(R.id.tvEstimatedTime);
-        ImageView ivRecipePreview = view.findViewById(R.id.ivRecipePreview);
+        // Recipe image
         ImageView recipeImage = view.findViewById(R.id.recipeImage);
-        LinearLayout reviewIngredientsContainer = view.findViewById(R.id.reviewIngredientsContainer);
-        LinearLayout reviewInstructionsContainer = view.findViewById(R.id.reviewInstructionsContainer);
+        if (recipe != null && !recipe.getImageUrls().isEmpty()) {
+            Glide.with(context)
+                .load(recipe.getImageUrls().get(0))
+                .placeholder(R.drawable.placeholder_image)
+                .into(recipeImage);
+        } else if (dataListener != null && !dataListener.getSelectedImageUris().isEmpty()) {
+            Glide.with(context)
+                .load(dataListener.getSelectedImageUris().get(0))
+                .into(recipeImage);
+        }
         
+        // Recipe Preview Image
+        ImageView ivRecipePreview = view.findViewById(R.id.ivRecipePreview);
+        if (ivRecipePreview != null) {
+            if (recipe != null && !recipe.getImageUrls().isEmpty()) {
+                Glide.with(context)
+                    .load(recipe.getImageUrls().get(0))
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(ivRecipePreview);
+            } else if (dataListener != null && !dataListener.getSelectedImageUris().isEmpty()) {
+                Glide.with(context)
+                    .load(dataListener.getSelectedImageUris().get(0))
+                    .into(ivRecipePreview);
+            }
+        }
+        
+        // Recipe name
+        TextView tvRecipeName = view.findViewById(R.id.tvRecipeName);
+        if (recipe != null && recipe.getName() != null) {
+            tvRecipeName.setText(recipe.getName());
+        }
+        
+        // Recipe time
+        TextView tvEstimatedTime = view.findViewById(R.id.tvEstimatedTime);
         if (recipe != null) {
-            if (tvRecipeName != null) {
-                tvRecipeName.setText(recipe.getName());
+            int prepTime = recipe.getPrepTime();
+            int cookTime = recipe.getCookTime();
+            int totalTime = prepTime + cookTime;
+            tvEstimatedTime.setText(totalTime + " Minutes");
+        }
+        
+        // Ingredient count
+        TextView tvIngredientCount = view.findViewById(R.id.tvIngredientCount);
+        if (recipe != null && recipe.getIngredients() != null) {
+            tvIngredientCount.setText(String.valueOf(recipe.getIngredients().size()));
+        }
+        
+        // Steps count
+        TextView tvStepCount = view.findViewById(R.id.tvStepCount);
+        if (recipe != null && recipe.getInstructions() != null && tvStepCount != null) {
+            tvStepCount.setText(String.valueOf(recipe.getInstructions().size()));
+        }
+        
+        // Check for total time TextView
+        TextView tvTotalTime = view.findViewById(R.id.tvTotalTime);
+        if (recipe != null && tvTotalTime != null) {
+            int prepTime = recipe.getPrepTime();
+            int cookTime = recipe.getCookTime();
+            int totalTime = prepTime + cookTime;
+            tvTotalTime.setText(totalTime + " min");
+        }
+        
+        // Description
+        TextView tvDescription = view.findViewById(R.id.tvDescription);
+        if (recipe != null && recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
+            tvDescription.setText(recipe.getDescription());
+            tvDescription.setVisibility(View.VISIBLE);
+            View descriptionSection = view.findViewById(R.id.descriptionSection);
+            if (descriptionSection != null) {
+                descriptionSection.setVisibility(View.VISIBLE);
             }
-            
-            if (tvIngredientCount != null) {
-                tvIngredientCount.setText(String.valueOf(recipe.getIngredients().size()));
+        } else if (tvDescription != null) {
+            tvDescription.setVisibility(View.GONE);
+            View descriptionSection = view.findViewById(R.id.descriptionSection);
+            if (descriptionSection != null) {
+                descriptionSection.setVisibility(View.GONE);
             }
-            
-            int stepCount = 0;
-            for (Recipe.Instruction instruction : recipe.getInstructions()) {
-                stepCount += instruction.getSteps().size();
-            }
-            
-            if (tvStepCount != null) {
-                tvStepCount.setText(String.valueOf(stepCount));
-            }
-            
-            int totalTime = recipe.getPrepTime() + recipe.getCookTime();
-            if (tvTotalTime != null) {
-                tvTotalTime.setText(totalTime + " min");
-            }
-            
-            if (tvEstimatedTime != null) {
-                tvEstimatedTime.setText(totalTime + " Minutes");
-            }
-            
-            // Show recipe image if available
-            Uri latestImageUri = null;
-            if (!recipe.getImageUrls().isEmpty()) {
-                String imageUrl = recipe.getImageUrls().get(0);
-                if (imageUrl != null && !imageUrl.isEmpty()) {
-                    if (ivRecipePreview != null) {
-                        Glide.with(context)
-                            .load(imageUrl)
-                            .placeholder(R.drawable.placeholder_food)
-                            .into(ivRecipePreview);
-                    }
-                    
-                    if (recipeImage != null) {
-                        Glide.with(context)
-                            .load(imageUrl)
-                            .placeholder(R.drawable.placeholder_food)
-                            .into(recipeImage);
-                    }
-                }
-            } else if (!((CreateRecipeActivity)context).getSelectedImageUris().isEmpty()) {
-                // If we have selected images but not yet uploaded to Cloudinary
-                latestImageUri = ((CreateRecipeActivity)context).getSelectedImageUris().get(0);
-                if (ivRecipePreview != null && latestImageUri != null) {
-                    Glide.with(context)
-                        .load(latestImageUri)
-                        .placeholder(R.drawable.placeholder_food)
-                        .into(ivRecipePreview);
-                }
-                
-                if (recipeImage != null && latestImageUri != null) {
-                    Glide.with(context)
-                        .load(latestImageUri)
-                        .placeholder(R.drawable.placeholder_food)
-                        .into(recipeImage);
-                }
-            }
-            
-            // Populate ingredients
-            if (reviewIngredientsContainer != null) {
-                reviewIngredientsContainer.removeAllViews();
-                
+        }
+        
+        // Ingredients
+        LinearLayout ingredientsList = view.findViewById(R.id.reviewIngredientsList);
+        if (ingredientsList != null) {
+            ingredientsList.removeAllViews();
+            if (recipe != null && recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
                 for (Recipe.Ingredient ingredient : recipe.getIngredients()) {
-                    // Create ingredient row
-                    LinearLayout ingredientRow = new LinearLayout(context);
-                    ingredientRow.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    ingredientRow.setOrientation(LinearLayout.HORIZONTAL);
-                    ingredientRow.setPadding(0, 24, 0, 24); // 8dp vertical padding
+                    View ingredientView = layoutInflater.inflate(R.layout.item_review_ingredient, ingredientsList, false);
+                    TextView tvIngredientName = ingredientView.findViewById(R.id.tvIngredientName);
+                    TextView tvIngredientAmount = ingredientView.findViewById(R.id.tvIngredientAmount);
                     
-                    // Ingredient name
-                    TextView nameView = new TextView(context);
-                    LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
-                            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-                    nameView.setLayoutParams(nameParams);
-                    nameView.setText(ingredient.getName());
-                    nameView.setTextColor(context.getResources().getColor(android.R.color.black));
+                    tvIngredientName.setText(ingredient.getName());
+                    tvIngredientAmount.setText(ingredient.getAmount() + " " + ingredient.getUnit());
                     
-                    // Ingredient amount and unit
-                    TextView amountView = new TextView(context);
-                    amountView.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    amountView.setText(ingredient.getAmount() + " " + ingredient.getUnit());
-                    amountView.setTextColor(context.getResources().getColor(android.R.color.black));
-                    
-                    // Add views to row
-                    ingredientRow.addView(nameView);
-                    ingredientRow.addView(amountView);
-                    
-                    // Add row to container
-                    reviewIngredientsContainer.addView(ingredientRow);
-                    
-                    // Add divider if not the last ingredient
-                    if (recipe.getIngredients().indexOf(ingredient) < recipe.getIngredients().size() - 1) {
-                        View divider = new View(context);
-                        divider.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, 1));
-                        divider.setBackgroundColor(context.getResources().getColor(R.color.dividerColor));
-                        reviewIngredientsContainer.addView(divider);
-                    }
+                    ingredientsList.addView(ingredientView);
                 }
             }
+        }
+        
+        // Instructions (How to)
+        LinearLayout instructionsList = view.findViewById(R.id.reviewInstructionsList);
+        TextView instructionsTitle = view.findViewById(R.id.instructionsTitle);
+        
+        if (instructionsList != null) {
+            instructionsList.removeAllViews();
             
-            // Populate instructions
-            if (reviewInstructionsContainer != null) {
-                reviewInstructionsContainer.removeAllViews();
+            if (recipe != null && recipe.getInstructions() != null && !recipe.getInstructions().isEmpty()) {
+                // Make sure the instructions title is visible
+                if (instructionsTitle != null) {
+                    instructionsTitle.setVisibility(View.VISIBLE);
+                }
                 
-                int instructionNumber = 1;
+                // Make sure the container is visible
+                View instructionsSection = view.findViewById(R.id.instructionsSection);
+                if (instructionsSection != null) {
+                    instructionsSection.setVisibility(View.VISIBLE);
+                }
+                
+                int stepNumber = 1;
                 for (Recipe.Instruction instruction : recipe.getInstructions()) {
-                    // Instruction title
-                    TextView titleView = new TextView(context);
-                    titleView.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    titleView.setText(instructionNumber + ". " + instruction.getTitle());
-                    titleView.setTextColor(context.getResources().getColor(android.R.color.black));
-                    titleView.setTypeface(null, Typeface.BOLD);
-                    titleView.setTextSize(16);
-                    titleView.setPadding(0, 0, 0, 16); // 8dp bottom padding
-                    reviewInstructionsContainer.addView(titleView);
+                    View instructionView = layoutInflater.inflate(R.layout.item_review_instruction, instructionsList, false);
+                    TextView tvStepNumber = instructionView.findViewById(R.id.tvStepNumber);
+                    TextView tvInstructionTitle = instructionView.findViewById(R.id.tvInstructionTitle);
+                    TextView tvInstructionStep = instructionView.findViewById(R.id.tvInstructionStep);
                     
-                    // Instruction steps
-                    for (String step : instruction.getSteps()) {
-                        TextView stepView = new TextView(context);
-                        stepView.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
-                        stepView.setText("• " + step);
-                        stepView.setTextColor(context.getResources().getColor(android.R.color.black));
-                        stepView.setPadding(0, 0, 0, 8); // 4dp bottom padding
-                        reviewInstructionsContainer.addView(stepView);
+                    tvStepNumber.setText("Step " + stepNumber);
+                    tvInstructionTitle.setText(instruction.getTitle());
+                    
+                    // Handle the steps as a list
+                    if (instruction.getSteps() != null && !instruction.getSteps().isEmpty()) {
+                        StringBuilder stepsText = new StringBuilder();
+                        for (int i = 0; i < instruction.getSteps().size(); i++) {
+                            stepsText.append(instruction.getSteps().get(i));
+                            if (i < instruction.getSteps().size() - 1) {
+                                stepsText.append("\n\n");
+                            }
+                        }
+                        tvInstructionStep.setText(stepsText.toString());
                     }
                     
-                    // Add spacing between instructions
-                    if (recipe.getInstructions().indexOf(instruction) < recipe.getInstructions().size() - 1) {
-                        View spacer = new View(context);
-                        spacer.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, 16));
-                        reviewInstructionsContainer.addView(spacer);
-                    }
-                    
-                    instructionNumber++;
+                    instructionsList.addView(instructionView);
+                    stepNumber++;
+                }
+            } else {
+                // Hide instructions section if empty
+                if (instructionsTitle != null) {
+                    instructionsTitle.setVisibility(View.GONE);
+                }
+                
+                View instructionsSection = view.findViewById(R.id.instructionsSection);
+                if (instructionsSection != null) {
+                    instructionsSection.setVisibility(View.GONE);
                 }
             }
         }
         
-        // Set up submit button
-        Button submitButton = view.findViewById(R.id.btnFinish);
-        if (submitButton == null) {
-            // Try to find a button that might be used for submission
-            submitButton = findSubmitButton(view);
-        }
-        
+        // Submit button
+        Button submitButton = findSubmitButton(view);
         if (submitButton != null) {
             submitButton.setOnClickListener(v -> {
-                // Submit recipe and finish
+                if (dataListener != null) {
                 ((CreateRecipeActivity)context).finishRecipeCreation();
+                }
             });
         }
     }
@@ -844,5 +928,6 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
     public interface RecipeDataListener {
         void onRecipeDataChanged(Recipe recipe);
         void onImagePickRequested();
+        List<Uri> getSelectedImageUris();
     }
 } 

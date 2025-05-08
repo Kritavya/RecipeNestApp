@@ -77,6 +77,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
     private List<Uri> selectedImageUris = new ArrayList<>();
     private ProgressDialog progressDialog;
     private int uploadedImageCount = 0;
+    private String currentImageUrl; // Track the current image URL if it's in Cloudinary
     
     // Activity result launchers
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -205,7 +206,11 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
     
     private void setupBottomNavigation() {
         navHome.setOnClickListener(v -> {
-            finish(); // Go back to home
+            if (currentRecipe.getImageUrls() != null && !currentRecipe.getImageUrls().isEmpty()) {
+                showExitConfirmationDialog();
+            } else {
+                finish(); // Go back to home without confirmation if no images uploaded
+            }
         });
     }
     
@@ -311,6 +316,36 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
             return false;
         }
         
+        if (currentRecipe.getPrepTime() <= 0) {
+            Toast.makeText(this, "Please enter preparation time", Toast.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(3);
+            return false;
+        }
+        
+        if (currentRecipe.getCookTime() <= 0) {
+            Toast.makeText(this, "Please enter cooking time", Toast.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(3);
+            return false;
+        }
+        
+        if (currentRecipe.getServings() <= 0) {
+            Toast.makeText(this, "Please enter number of servings", Toast.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(3);
+            return false;
+        }
+        
+        if (currentRecipe.getDifficulty() == null || currentRecipe.getDifficulty().isEmpty()) {
+            Toast.makeText(this, "Please select a difficulty level", Toast.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(3);
+            return false;
+        }
+        
+        if (currentRecipe.getCuisineType() == null || currentRecipe.getCuisineType().isEmpty()) {
+            Toast.makeText(this, "Please select a cuisine type", Toast.LENGTH_SHORT).show();
+            viewPager.setCurrentItem(3);
+            return false;
+        }
+        
         return true;
     }
     
@@ -341,8 +376,13 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
                     
                     // Check if all images are uploaded
                     if (uploadedImageCount == selectedImageUris.size()) {
-                        // All images uploaded, save recipe to Firebase
-                        saveRecipeToFirebase();
+                        // Delete previous image if there was one
+                        if (currentImageUrl != null && !currentImageUrl.isEmpty()) {
+                            deleteOldImage(currentImageUrl);
+                        } else {
+                            // All images uploaded, save recipe to Firebase
+                            saveRecipeToFirebase();
+                        }
                     }
                 }
 
@@ -502,7 +542,15 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
     }
     
     private void handleCroppedImage(Uri croppedImageUri) {
+        // If we already have an image URL, delete the previous image from Cloudinary
+        if (currentRecipe.getImageUrls() != null && !currentRecipe.getImageUrls().isEmpty()) {
+            // Store current image URL to delete after successful upload
+            currentImageUrl = currentRecipe.getImageUrls().get(0);
+            currentRecipe.getImageUrls().clear();
+        }
+        
         // Add to selected images
+        selectedImageUris.clear(); // Only keep the most recent image
         selectedImageUris.add(croppedImageUri);
         
         // Update UI
@@ -539,5 +587,88 @@ public class CreateRecipeActivity extends AppCompatActivity implements CreateRec
 
     public List<Uri> getSelectedImageUris() {
         return selectedImageUris;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentRecipe.getImageUrls() != null && !currentRecipe.getImageUrls().isEmpty()) {
+            showExitConfirmationDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+    
+    private void showExitConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit Recipe Creation");
+        builder.setMessage("Are you sure you want to exit? All progress will be lost and uploaded images will be deleted.");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Delete all uploaded images before exiting
+            deleteAllUploadedImages();
+        });
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
+    }
+    
+    private void deleteAllUploadedImages() {
+        if (currentRecipe.getImageUrls() != null && !currentRecipe.getImageUrls().isEmpty()) {
+            progressDialog.setTitle("Cleaning up");
+            progressDialog.setMessage("Deleting uploaded images...");
+            progressDialog.show();
+            
+            final int[] deletedCount = {0};
+            final int totalCount = currentRecipe.getImageUrls().size();
+            
+            for (String imageUrl : currentRecipe.getImageUrls()) {
+                CloudinaryHelper.deleteImage(this, imageUrl, new CloudinaryHelper.CloudinaryDeleteCallback() {
+                    @Override
+                    public void onSuccess() {
+                        deletedCount[0]++;
+                        if (deletedCount[0] >= totalCount) {
+                            // All images deleted, dismiss dialog and exit
+                            progressDialog.dismiss();
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Just log the error but continue
+                        Log.e(TAG, "Error deleting image: " + errorMessage);
+                        deletedCount[0]++;
+                        if (deletedCount[0] >= totalCount) {
+                            // All images processed, dismiss dialog and exit
+                            progressDialog.dismiss();
+                            finish();
+                        }
+                    }
+                });
+            }
+        } else {
+            // No images to delete
+            finish();
+        }
+    }
+    
+    private void deleteOldImage(String imageUrl) {
+        progressDialog.setMessage("Cleaning up old image...");
+        
+        CloudinaryHelper.deleteImage(this, imageUrl, new CloudinaryHelper.CloudinaryDeleteCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Successfully deleted old image: " + imageUrl);
+                // Continue with saving the recipe
+                saveRecipeToFirebase();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Just log the error but continue with saving
+                Log.e(TAG, "Error deleting old image: " + errorMessage);
+                saveRecipeToFirebase();
+            }
+        });
     }
 } 
