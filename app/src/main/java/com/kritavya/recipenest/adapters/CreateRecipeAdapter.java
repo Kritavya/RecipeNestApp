@@ -40,7 +40,7 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
     private RecipeDataListener dataListener;
     
     // View references for data collection
-    private EditText etRecipeName, etRecipeDescription, etPrepTime, etCookTime, etServings;
+    private EditText etRecipeName, etRecipeDescription, etPrepTime, etCookTime, etServings, etVideoUrl;
     private Spinner spinnerDifficulty, spinnerCuisineType;
     private EditText etIngredientName, etIngredientAmount;
     private Spinner spinnerUnit;
@@ -441,6 +441,7 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
         etPrepTime = view.findViewById(R.id.etPrepTime);
         etCookTime = view.findViewById(R.id.etCookTime);
         etServings = view.findViewById(R.id.etServings);
+        etVideoUrl = view.findViewById(R.id.etVideoUrl);
         spinnerDifficulty = view.findViewById(R.id.spinnerDifficulty);
         spinnerCuisineType = view.findViewById(R.id.spinnerCuisineType);
         
@@ -472,6 +473,9 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
             if (etServings != null) {
                 etServings.setText(recipe.getServings() > 0 ? String.valueOf(recipe.getServings()) : "");
             }
+            if (etVideoUrl != null && recipe.getVideoUrl() != null) {
+                etVideoUrl.setText(recipe.getVideoUrl());
+            }
         }
         
         // Set up continue button
@@ -496,6 +500,10 @@ public class CreateRecipeAdapter extends RecyclerView.Adapter<CreateRecipeAdapte
             
             if (etServings != null && !etServings.getText().toString().isEmpty()) {
                 recipe.setServings(Integer.parseInt(etServings.getText().toString()));
+            }
+            
+            if (etVideoUrl != null && !etVideoUrl.getText().toString().isEmpty()) {
+                recipe.setVideoUrl(etVideoUrl.getText().toString().trim());
             }
             
             if (spinnerDifficulty != null) {

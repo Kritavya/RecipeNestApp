@@ -1,0 +1,550 @@
+[
+  {
+    "id": "recipe1",
+    "name": "Butter Chicken Curry",
+    "description": "A rich and creamy Indian curry that's perfect for a weeknight dinner.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://feelgoodfoodie.net/wp-content/uploads/2024/02/Easy-Butter-Chicken-TIMG.jpg"
+    ],
+    "categories": ["Indian", "Curry", "Chicken", "Dinner"],
+    "ingredients": [
+      {"name": "Chicken Thighs", "amount": "500", "unit": "g"},
+      {"name": "Yogurt", "amount": "1/2", "unit": "cup"},
+      {"name": "Lemon Juice", "amount": "2", "unit": "tbsp"},
+      {"name": "Garam Masala", "amount": "1", "unit": "tbsp"},
+      {"name": "Ground Cumin", "amount": "1", "unit": "tsp"},
+      {"name": "Chili Powder", "amount": "1", "unit": "tsp"},
+      {"name": "Butter", "amount": "2", "unit": "tbsp"},
+      {"name": "Onion", "amount": "1", "unit": "pcs"},
+      {"name": "Garlic", "amount": "3", "unit": "cloves"},
+      {"name": "Ginger", "amount": "1", "unit": "inch"},
+      {"name": "Tomato Sauce", "amount": "1", "unit": "cup"},
+      {"name": "Heavy Cream", "amount": "1/4", "unit": "cup"},
+      {"name": "Fresh Cilantro", "amount": "1/4", "unit": "cup"}
+    ],
+    "instructions": [
+      {
+        "title": "Marinate the Chicken",
+        "steps": [
+          "In a large bowl, combine yogurt, lemon juice, garam masala, cumin, and chili powder.",
+          "Add chicken and toss to coat. Cover and refrigerate for at least 1 hour."
+        ]
+      },
+      {
+        "title": "Prepare the Sauce",
+        "steps": [
+          "Melt butter in a large pan over medium heat.",
+          "Add onions and cook until soft, about 3 minutes.",
+          "Add garlic and ginger, cook for 1 minute more.",
+          "Stir in tomato sauce and simmer for 10 minutes."
+        ]
+      },
+      {
+        "title": "Cook the Chicken",
+        "steps": [
+          "Add marinated chicken to the sauce.",
+          "Simmer until chicken is cooked through, about 15 minutes.",
+          "Stir in heavy cream and simmer for 5 more minutes.",
+          "Garnish with fresh cilantro before serving."
+        ]
+      }
+    ],
+    "prepTime": 15,
+    "cookTime": 30,
+    "servings": 4,
+    "difficulty": "Medium",
+    "isPublic": true,
+    "rating": 4.8,
+    "ratingCount": 156,
+    "videoUrl": "https://www.youtube.com/watch?v=a03U45jFxOI",
+    "notes": "Serve with basmati rice and naan bread for a complete meal.",
+    "cuisineType": "Indian"
+  },
+  {
+    "id": "recipe2",
+    "name": "Classic Spaghetti Carbonara",
+    "description": "The authentic Italian pasta dish with eggs, cheese, pancetta and black pepper.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://images.services.kitchenstories.io/6glN_4JhpVS9aUiBS7JnGsuDULA=/3840x0/filters:quality(80)/images.kitchenstories.io/wagtailOriginalImages/R2568-photo-final-_0.jpg"
+    ],
+    "categories": ["Italian", "Pasta", "Quick Meal"],
+    "ingredients": [
+      {"name": "Spaghetti", "amount": "400", "unit": "g"},
+      {"name": "Pancetta or Guanciale", "amount": "150", "unit": "g"},
+      {"name": "Eggs", "amount": "3", "unit": "pcs"},
+      {"name": "Egg Yolk", "amount": "1", "unit": "pcs"},
+      {"name": "Pecorino Romano Cheese", "amount": "50", "unit": "g"},
+      {"name": "Parmesan Cheese", "amount": "50", "unit": "g"},
+      {"name": "Black Pepper", "amount": "1", "unit": "tsp"},
+      {"name": "Salt", "amount": "to taste", "unit": ""}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare Ingredients",
+        "steps": [
+          "Cut the pancetta into small cubes.",
+          "Grate both cheeses and mix them together.",
+          "In a bowl, whisk eggs and egg yolk with half the cheese mixture."
+        ]
+      },
+      {
+        "title": "Cook Pasta",
+        "steps": [
+          "Bring a large pot of salted water to boil.",
+          "Cook spaghetti according to package instructions until al dente.",
+          "Reserve 1/2 cup of pasta water before draining."
+        ]
+      },
+      {
+        "title": "Make the Sauce",
+        "steps": [
+          "While pasta is cooking, sauté pancetta in a large pan until crisp.",
+          "Turn off heat under the pancetta.",
+          "Add drained pasta to the pancetta pan and toss quickly.",
+          "Quickly pour in egg mixture, stirring continuously.",
+          "Add a splash of reserved pasta water to create a creamy sauce.",
+          "Add remaining cheese and black pepper.",
+          "Serve immediately."
+        ]
+      }
+    ],
+    "prepTime": 10,
+    "cookTime": 15,
+    "servings": 4,
+    "difficulty": "Medium",
+    "isPublic": true,
+    "rating": 4.9,
+    "ratingCount": 203,
+    "videoUrl": "https://www.youtube.com/watch?v=3AAdKl1UYZs",
+    "notes": "The key to carbonara is to work quickly to ensure the eggs create a creamy sauce without scrambling.",
+    "cuisineType": "Italian"
+  },
+  {
+    "id": "recipe3",
+    "name": "Thai Green Curry",
+    "description": "A fragrant and spicy Thai curry with coconut milk, vegetables and your choice of protein.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://munchingwithmariyah.com/wp-content/uploads/2025/03/IMG_4915.jpg"
+    ],
+    "categories": ["Thai", "Curry", "Asian", "Spicy"],
+    "ingredients": [
+      {"name": "Chicken or Tofu", "amount": "400", "unit": "g"},
+      {"name": "Green Curry Paste", "amount": "3", "unit": "tbsp"},
+      {"name": "Coconut Milk", "amount": "400", "unit": "ml"},
+      {"name": "Fish Sauce", "amount": "2", "unit": "tbsp"},
+      {"name": "Palm Sugar", "amount": "1", "unit": "tbsp"},
+      {"name": "Bell Peppers", "amount": "2", "unit": "pcs"},
+      {"name": "Eggplant", "amount": "1", "unit": "pcs"},
+      {"name": "Thai Basil Leaves", "amount": "1", "unit": "handful"},
+      {"name": "Lime Leaves", "amount": "4", "unit": "pcs"},
+      {"name": "Vegetable Oil", "amount": "2", "unit": "tbsp"}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare Ingredients",
+        "steps": [
+          "Cut chicken or tofu into bite-sized pieces.",
+          "Slice bell peppers and eggplant."
+        ]
+      },
+      {
+        "title": "Cook the Curry",
+        "steps": [
+          "Heat oil in a large pan over medium heat.",
+          "Add green curry paste and fry for 1-2 minutes until fragrant.",
+          "Add chicken/tofu and stir to coat with paste.",
+          "Pour in coconut milk and bring to a simmer.",
+          "Add vegetables, fish sauce, and palm sugar.",
+          "Simmer until chicken is cooked and vegetables are tender, about 10-15 minutes."
+        ]
+      },
+      {
+        "title": "Finish the Dish",
+        "steps": [
+          "Stir in Thai basil leaves and lime leaves.",
+          "Taste and adjust seasoning if needed.",
+          "Serve hot with steamed jasmine rice."
+        ]
+      }
+    ],
+    "prepTime": 15,
+    "cookTime": 20,
+    "servings": 4,
+    "difficulty": "Easy",
+    "isPublic": true,
+    "rating": 4.7,
+    "ratingCount": 129,
+    "videoUrl": "https://www.youtube.com/watch?v=LIbKVpBQKJI",
+    "notes": "For a vegetarian version, use tofu and substitute soy sauce for fish sauce.",
+    "cuisineType": "Asian"
+  },
+  {
+    "id": "recipe4",
+    "name": "Classic French Crêpes",
+    "description": "Thin, delicate French pancakes that can be filled with sweet or savory ingredients.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://www.sweetashoney.co/wp-content/uploads/French-Crepes-6-scaled.jpg"
+    ],
+    "categories": ["French", "Breakfast", "Dessert"],
+    "ingredients": [
+      {"name": "All-Purpose Flour", "amount": "1", "unit": "cup"},
+      {"name": "Eggs", "amount": "2", "unit": "pcs"},
+      {"name": "Milk", "amount": "1/2", "unit": "cup"},
+      {"name": "Water", "amount": "1/2", "unit": "cup"},
+      {"name": "Unsalted Butter", "amount": "2", "unit": "tbsp"},
+      {"name": "Salt", "amount": "1/4", "unit": "tsp"},
+      {"name": "Sugar", "amount": "1", "unit": "tbsp"},
+      {"name": "Vanilla Extract", "amount": "1", "unit": "tsp"}
+    ],
+    "instructions": [
+      {
+        "title": "Make the Batter",
+        "steps": [
+          "In a blender, combine all ingredients and blend until smooth.",
+          "Let the batter rest in the refrigerator for at least 1 hour."
+        ]
+      },
+      {
+        "title": "Cook the Crêpes",
+        "steps": [
+          "Heat a small non-stick pan over medium heat.",
+          "Lightly butter the pan.",
+          "Pour about 1/4 cup of batter into the center of the pan, then quickly tilt to spread into a thin layer.",
+          "Cook until edges are golden and top looks dry (about 1 minute).",
+          "Flip and cook for another 30 seconds.",
+          "Transfer to a plate and repeat with remaining batter."
+        ]
+      },
+      {
+        "title": "Serve",
+        "steps": [
+          "Fill with your choice of sweet fillings like Nutella, jam, or fresh fruit.",
+          "Alternatively, use savory fillings like ham and cheese.",
+          "Fold or roll crêpes around filling."
+        ]
+      }
+    ],
+    "prepTime": 10,
+    "cookTime": 20,
+    "servings": 8,
+    "difficulty": "Easy",
+    "isPublic": true,
+    "rating": 4.9,
+    "ratingCount": 187,
+    "videoUrl": "https://www.youtube.com/watch?v=YiUFwL02dh0",
+    "notes": "Letting the batter rest allows gluten to relax, resulting in more tender crêpes.",
+    "cuisineType": "French"
+  },
+  {
+    "id": "recipe5",
+    "name": "Mexican Guacamole",
+    "description": "Fresh and flavorful avocado dip that's perfect for parties or as a topping.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://californiaavocado.com/wp-content/uploads/2020/07/Guacamole-Autentico-1.jpeg"
+    ],
+    "categories": ["Mexican", "Appetizer", "Dip", "Vegetarian"],
+    "ingredients": [
+      {"name": "Ripe Avocados", "amount": "3", "unit": "pcs"},
+      {"name": "Lime", "amount": "1", "unit": "pcs"},
+      {"name": "Red Onion", "amount": "1/2", "unit": "pcs"},
+      {"name": "Tomatoes", "amount": "2", "unit": "pcs"},
+      {"name": "Cilantro", "amount": "1/4", "unit": "cup"},
+      {"name": "Jalapeño", "amount": "1", "unit": "pcs"},
+      {"name": "Garlic", "amount": "1", "unit": "clove"},
+      {"name": "Salt", "amount": "to taste", "unit": ""},
+      {"name": "Black Pepper", "amount": "to taste", "unit": ""}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare Ingredients",
+        "steps": [
+          "Dice the red onion, tomatoes, and jalapeño.",
+          "Finely chop the cilantro and mince the garlic.",
+          "Cut the lime in half."
+        ]
+      },
+      {
+        "title": "Make the Guacamole",
+        "steps": [
+          "Cut avocados in half, remove pits, and scoop out flesh into a bowl.",
+          "Mash the avocados with a fork, leaving some chunks for texture.",
+          "Squeeze lime juice over the mashed avocados to prevent browning.",
+          "Add diced onion, tomatoes, jalapeño, garlic, and cilantro.",
+          "Mix gently to combine.",
+          "Season with salt and pepper to taste."
+        ]
+      },
+      {
+        "title": "Serve",
+        "steps": [
+          "Serve immediately with tortilla chips.",
+          "If not serving right away, press plastic wrap directly onto the surface to prevent browning."
+        ]
+      }
+    ],
+    "prepTime": 15,
+    "cookTime": 0,
+    "servings": 6,
+    "difficulty": "Easy",
+    "isPublic": true,
+    "rating": 4.7,
+    "ratingCount": 142,
+    "videoUrl": "https://www.youtube.com/watch?v=7KBxoQpMFgA",
+    "notes": "For extra flavor, you can add a pinch of ground cumin.",
+    "cuisineType": "Mexican"
+  },
+  {
+    "id": "recipe6",
+    "name": "Japanese Teriyaki Chicken",
+    "description": "Juicy chicken glazed with sweet and savory teriyaki sauce, a Japanese classic.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://www.onceuponachef.com/images/2024/01/chicken-teriyaki.jpg"
+    ],
+    "categories": ["Japanese", "Chicken", "Asian", "Dinner"],
+    "ingredients": [
+      {"name": "Chicken Thighs", "amount": "600", "unit": "g"},
+      {"name": "Soy Sauce", "amount": "4", "unit": "tbsp"},
+      {"name": "Mirin", "amount": "4", "unit": "tbsp"},
+      {"name": "Sake", "amount": "2", "unit": "tbsp"},
+      {"name": "Brown Sugar", "amount": "2", "unit": "tbsp"},
+      {"name": "Garlic", "amount": "2", "unit": "cloves"},
+      {"name": "Ginger", "amount": "1", "unit": "inch"},
+      {"name": "Vegetable Oil", "amount": "1", "unit": "tbsp"},
+      {"name": "Cornstarch", "amount": "1", "unit": "tsp"},
+      {"name": "Water", "amount": "1", "unit": "tbsp"},
+      {"name": "Green Onions", "amount": "2", "unit": "pcs"},
+      {"name": "Sesame Seeds", "amount": "1", "unit": "tsp"}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare the Sauce",
+        "steps": [
+          "In a bowl, mix soy sauce, mirin, sake, and brown sugar.",
+          "Grate garlic and ginger and add to the sauce mixture.",
+          "Set aside half of the sauce for glazing later."
+        ]
+      },
+      {
+        "title": "Marinate the Chicken",
+        "steps": [
+          "Place chicken thighs in a ziplock bag.",
+          "Pour half of the sauce over the chicken.",
+          "Seal the bag and marinate in the refrigerator for at least 30 minutes, or up to overnight."
+        ]
+      },
+      {
+        "title": "Cook the Chicken",
+        "steps": [
+          "Heat oil in a large pan over medium-high heat.",
+          "Remove chicken from marinade and pat dry with paper towels.",
+          "Cook chicken for 3-4 minutes per side until golden brown.",
+          "Remove chicken and let rest for 5 minutes before slicing."
+        ]
+      },
+      {
+        "title": "Make the Glaze",
+        "steps": [
+          "Pour the reserved sauce into the pan and bring to a simmer.",
+          "Mix cornstarch and water to make a slurry.",
+          "Add slurry to the sauce and stir until thickened.",
+          "Return sliced chicken to the pan and coat with the glaze.",
+          "Garnish with sliced green onions and sesame seeds."
+        ]
+      }
+    ],
+    "prepTime": 15,
+    "cookTime": 20,
+    "servings": 4,
+    "difficulty": "Easy",
+    "isPublic": true,
+    "rating": 4.8,
+    "ratingCount": 165,
+    "videoUrl": "https://www.youtube.com/watch?v=XVu57qOcpLY",
+    "notes": "Serve with steamed rice and vegetables for a complete meal.",
+    "cuisineType": "Japanese"
+  },
+  {
+    "id": "recipe7",
+    "name": "Greek Moussaka",
+    "description": "A traditional Greek casserole with layers of eggplant, potatoes, and spiced meat topped with a creamy béchamel sauce.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://www.recipetineats.com/tachyon/2019/03/Greek-Moussaka_3-re-edited-SQ.jpg"
+    ],
+    "categories": ["Greek", "Casserole", "Mediterranean", "Dinner"],
+    "ingredients": [
+      {"name": "Eggplants", "amount": "2", "unit": "large"},
+      {"name": "Potatoes", "amount": "2", "unit": "medium"},
+      {"name": "Ground Lamb or Beef", "amount": "500", "unit": "g"},
+      {"name": "Onion", "amount": "1", "unit": "large"},
+      {"name": "Garlic", "amount": "3", "unit": "cloves"},
+      {"name": "Tomato Paste", "amount": "2", "unit": "tbsp"},
+      {"name": "Canned Crushed Tomatoes", "amount": "400", "unit": "g"},
+      {"name": "Red Wine", "amount": "100", "unit": "ml"},
+      {"name": "Cinnamon", "amount": "1/2", "unit": "tsp"},
+      {"name": "Allspice", "amount": "1/4", "unit": "tsp"},
+      {"name": "Olive Oil", "amount": "4", "unit": "tbsp"},
+      {"name": "Butter", "amount": "50", "unit": "g"},
+      {"name": "Flour", "amount": "50", "unit": "g"},
+      {"name": "Milk", "amount": "600", "unit": "ml"},
+      {"name": "Nutmeg", "amount": "1/4", "unit": "tsp"},
+      {"name": "Parmesan Cheese", "amount": "50", "unit": "g"},
+      {"name": "Eggs", "amount": "2", "unit": "pcs"},
+      {"name": "Salt", "amount": "to taste", "unit": ""},
+      {"name": "Black Pepper", "amount": "to taste", "unit": ""}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare the Vegetables",
+        "steps": [
+          "Slice eggplants into 1/2 inch rounds, salt them, and let sit for 30 minutes to draw out moisture.",
+          "Rinse eggplant slices and pat dry.",
+          "Thinly slice potatoes.",
+          "Brush eggplant and potato slices with olive oil and bake at 400°F (200°C) for 15-20 minutes until soft."
+        ]
+      },
+      {
+        "title": "Make the Meat Sauce",
+        "steps": [
+          "Heat olive oil in a large pan and sauté the onion until soft.",
+          "Add garlic and cook for 1 minute.",
+          "Add ground meat and cook until browned.",
+          "Stir in tomato paste, crushed tomatoes, red wine, cinnamon, and allspice.",
+          "Simmer for 20-30 minutes until thickened. Season with salt and pepper."
+        ]
+      },
+      {
+        "title": "Make the Béchamel Sauce",
+        "steps": [
+          "Melt butter in a saucepan over medium heat.",
+          "Add flour and cook for 1-2 minutes, stirring constantly.",
+          "Gradually whisk in milk until smooth and thickened.",
+          "Add nutmeg and season with salt and pepper.",
+          "Remove from heat, let cool slightly, then whisk in eggs and parmesan."
+        ]
+      },
+      {
+        "title": "Assemble and Bake",
+        "steps": [
+          "In a 9x13 inch baking dish, layer potato slices, then half the eggplant slices.",
+          "Spread the meat sauce evenly over the eggplant.",
+          "Layer the remaining eggplant slices on top of the meat sauce.",
+          "Pour the béchamel sauce over everything and smooth the top.",
+          "Bake at 350°F (175°C) for 45-50 minutes until golden brown on top.",
+          "Let rest for 15-20 minutes before serving."
+        ]
+      }
+    ],
+    "prepTime": 45,
+    "cookTime": 75,
+    "servings": 8,
+    "difficulty": "Medium",
+    "isPublic": true,
+    "rating": 4.9,
+    "ratingCount": 98,
+    "videoUrl": "https://www.youtube.com/watch?v=QJsHYoQEjGo",
+    "notes": "Make ahead and reheat for even better flavor.",
+    "cuisineType": "Greek"
+  },
+  {
+    "id": "recipe8",
+    "name": "Korean Bibimbap",
+    "description": "A colorful Korean rice bowl topped with vegetables, protein, and a spicy gochujang sauce.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://www.recipetineats.com/tachyon/2019/05/Bibimbap_3.jpg"
+    ],
+    "categories": ["Korean", "Rice", "Asian", "Healthy"],
+    "ingredients": [
+      {"name": "Cooked White Rice", "amount": "3", "unit": "cups"},
+      {"name": "Ground Beef", "amount": "200", "unit": "g"},
+      {"name": "Soy Sauce", "amount": "2", "unit": "tbsp"},
+      {"name": "Sesame Oil", "amount": "2", "unit": "tbsp"},
+      {"name": "Garlic", "amount": "2", "unit": "cloves"},
+      {"name": "Spinach", "amount": "200", "unit": "g"},
+      {"name": "Carrots", "amount": "2", "unit": "medium"},
+      {"name": "Zucchini", "amount": "1", "unit": "medium"},
+      {"name": "Bean Sprouts", "amount": "100", "unit": "g"},
+      {"name": "Shiitake Mushrooms", "amount": "100", "unit": "g"},
+      {"name": "Eggs", "amount": "4", "unit": "pcs"},
+      {"name": "Gochujang (Korean Chili Paste)", "amount": "3", "unit": "tbsp"},
+      {"name": "Sugar", "amount": "1", "unit": "tsp"},
+      {"name": "Rice Vinegar", "amount": "1", "unit": "tsp"},
+      {"name": "Sesame Seeds", "amount": "1", "unit": "tbsp"}
+    ],
+    "instructions": [
+      {
+        "title": "Prepare the Vegetables",
+        "steps": [
+          "Julienne the carrots and zucchini.",
+          "Blanch the spinach for 1 minute, then rinse with cold water and squeeze out excess moisture.",
+          "Boil bean sprouts for 2-3 minutes, then drain.",
+          "Slice mushrooms and sauté until tender.",
+          "Season each vegetable separately with salt, garlic, and sesame oil."
+        ]
+      },
+      {
+        "title": "Prepare the Meat",
+        "steps": [
+          "Marinate ground beef with 1 tbsp soy sauce, 1 tsp sesame oil, and minced garlic.",
+          "Cook in a pan until browned and cooked through."
+        ]
+      },
+      {
+        "title": "Make the Sauce",
+        "steps": [
+          "Mix gochujang, 1 tbsp soy sauce, 1 tbsp sesame oil, sugar, and rice vinegar in a small bowl."
+        ]
+      },
+      {
+        "title": "Fry the Eggs",
+        "steps": [
+          "Fry eggs sunny-side up, keeping the yolks runny."
+        ]
+      },
+      {
+        "title": "Assemble the Bibimbap",
+        "steps": [
+          "Place warm rice in individual bowls.",
+          "Arrange the vegetables and meat in separate sections on top of the rice.",
+          "Place a fried egg in the center of each bowl.",
+          "Serve with the gochujang sauce on the side.",
+          "Sprinkle with sesame seeds before eating.",
+          "Mix everything together thoroughly before eating."
+        ]
+      }
+    ],
+    "prepTime": 30,
+    "cookTime": 30,
+    "servings": 4,
+    "difficulty": "Medium",
+    "isPublic": true,
+    "rating": 4.8,
+    "ratingCount": 112,
+    "videoUrl": "",
+    "notes": "You can customize with your favorite vegetables and proteins.",
+    "cuisineType": "Korean"
+  }
+] 

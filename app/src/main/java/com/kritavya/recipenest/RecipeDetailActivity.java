@@ -1,6 +1,11 @@
 package com.kritavya.recipenest;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kritavya.recipenest.models.Recipe;
 import com.kritavya.recipenest.utils.DateUtils;
+import com.kritavya.recipenest.utils.RecipeDataLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
@@ -50,8 +57,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         
-        // Get recipe ID from intent
+        // Get recipe ID and source from intent
         recipeId = getIntent().getStringExtra("recipe_id");
+        String recipeSource = getIntent().getStringExtra("recipe_source");
+        
         if (recipeId == null) {
             Toast.makeText(this, "Recipe not found", Toast.LENGTH_SHORT).show();
             finish();
@@ -59,7 +68,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
         
         initViews();
-        loadRecipeData();
+        
+        // Load recipe based on its source
+        if ("local".equals(recipeSource)) {
+            loadLocalRecipe(recipeId);
+        } else {
+            loadRecipeFromFirebase();
+        }
+        
         setupClickListeners();
     }
     
@@ -96,7 +112,19 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
     }
     
-    private void loadRecipeData() {
+    private void loadLocalRecipe(String recipeId) {
+        // Load recipe from local JSON data
+        Recipe recipe = RecipeDataLoader.getRecipeById(this, recipeId);
+        if (recipe != null) {
+            currentRecipe = recipe;
+            updateUI(recipe);
+        } else {
+            Toast.makeText(this, "Local recipe not found", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+    
+    private void loadRecipeFromFirebase() {
         // Load recipe data from Firebase
         mDatabase.child("recipes").child(recipeId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,13 +154,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         tvDate.setText(DateUtils.formatDate(recipe.getCreatedAt().getTime()));
         tvTime.setText(recipe.getCookingTime() + " Minutes");
         
-        // Load recipe image
-        if (recipe.getImageUrl() != null && !recipe.getImageUrl().isEmpty()) {
-            Glide.with(this)
-                .load(recipe.getImageUrl())
-                .placeholder(R.drawable.placeholder_food)
-                .into(recipeImage);
-        }
+        // Load recipe image and setup image indicators
+        setupRecipeImages(recipe);
         
         // Update categories
         updateCategories(recipe.getCategories());
@@ -150,6 +173,81 @@ public class RecipeDetailActivity extends AppCompatActivity {
         checkIfRecipeSaved();
     }
     
+    private void setupRecipeImages(Recipe recipe) {
+        List<String> imageUrls = new ArrayList<>();
+        
+        // Get all possible image sources
+        if (recipe.getImageUrls() != null && !recipe.getImageUrls().isEmpty()) {
+            imageUrls.addAll(recipe.getImageUrls());
+        } else if (recipe.getImageUrl() != null && !recipe.getImageUrl().isEmpty()) {
+            imageUrls.add(recipe.getImageUrl());
+        }
+        
+        // Load the first image if available
+        if (!imageUrls.isEmpty()) {
+            Glide.with(this)
+                .load(imageUrls.get(0))
+                .placeholder(R.drawable.placeholder_food)
+                .into(recipeImage);
+        }
+        
+        // Setup image indicators
+        View dotIndicator1 = findViewById(R.id.dotIndicator1);
+        View dotIndicator2 = findViewById(R.id.dotIndicator2);
+        View dotIndicator3 = findViewById(R.id.dotIndicator3);
+        ImageButton btnNextImage = findViewById(R.id.btnNextImage);
+        
+        // Show only the needed indicators based on image count
+        if (imageUrls.size() <= 1) {
+            // Hide all indicators and next button if there's only one image
+            dotIndicator1.setVisibility(View.GONE);
+            dotIndicator2.setVisibility(View.GONE);
+            dotIndicator3.setVisibility(View.GONE);
+            btnNextImage.setVisibility(View.GONE);
+        } else {
+            // Show only the needed number of indicators
+            dotIndicator1.setVisibility(View.VISIBLE);
+            dotIndicator2.setVisibility(imageUrls.size() >= 2 ? View.VISIBLE : View.GONE);
+            dotIndicator3.setVisibility(imageUrls.size() >= 3 ? View.VISIBLE : View.GONE);
+            btnNextImage.setVisibility(View.VISIBLE);
+            
+            // Set the proper tint color for indicators
+            dotIndicator1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+            
+            // Store the image URLs for navigation
+            final int[] currentImageIndex = {0};
+            
+            // Setup next image button click
+            btnNextImage.setOnClickListener(v -> {
+                currentImageIndex[0] = (currentImageIndex[0] + 1) % imageUrls.size();
+                Glide.with(RecipeDetailActivity.this)
+                    .load(imageUrls.get(currentImageIndex[0]))
+                    .placeholder(R.drawable.placeholder_food)
+                    .into(recipeImage);
+                
+                // Update indicators
+                dotIndicator1.setBackgroundResource(currentImageIndex[0] == 0 ? 
+                    R.drawable.dot_active : R.drawable.dot_inactive);
+                dotIndicator1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
+                    currentImageIndex[0] == 0 ? R.color.colorAccent : R.color.colorLightText)));
+                
+                if (dotIndicator2.getVisibility() == View.VISIBLE) {
+                    dotIndicator2.setBackgroundResource(currentImageIndex[0] == 1 ? 
+                        R.drawable.dot_active : R.drawable.dot_inactive);
+                    dotIndicator2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
+                        currentImageIndex[0] == 1 ? R.color.colorAccent : R.color.colorLightText)));
+                }
+                
+                if (dotIndicator3.getVisibility() == View.VISIBLE) {
+                    dotIndicator3.setBackgroundResource(currentImageIndex[0] == 2 ? 
+                        R.drawable.dot_active : R.drawable.dot_inactive);
+                    dotIndicator3.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
+                        currentImageIndex[0] == 2 ? R.color.colorAccent : R.color.colorLightText)));
+                }
+            });
+        }
+    }
+    
     private void updateCategories(List<String> categories) {
         categoryContainer.removeAllViews();
         
@@ -164,7 +262,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 categoryView.setLayoutParams(params);
                 
                 categoryView.setText(category);
-                categoryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                categoryView.setTextColor(getResources().getColor(R.color.colorLightText));
                 categoryView.setTextSize(14);
                 categoryView.setPadding(48, 24, 48, 24);
                 categoryView.setBackgroundResource(R.drawable.rounded_light_background);
@@ -180,27 +278,47 @@ public class RecipeDetailActivity extends AppCompatActivity {
         
         if (ingredients != null && !ingredients.isEmpty()) {
             int maxVisibleIngredients = 5;
-            int count = 0;
+            final boolean[] isExpanded = {false};
             
+            // First add all ingredients (we'll control visibility later)
             for (Recipe.Ingredient ingredient : ingredients) {
-                if (count < maxVisibleIngredients) {
-                    addIngredientView(ingredient);
-                    
-                    // Add divider except for the last visible item
-                    if (count < maxVisibleIngredients - 1 && count < ingredients.size() - 1) {
-                        View divider = new View(this);
-                        divider.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, 1));
-                        divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-                        ingredientsContainer.addView(divider);
-                    }
+                addIngredientView(ingredient);
+                
+                // Add divider except for the last item
+                if (ingredients.indexOf(ingredient) < ingredients.size() - 1) {
+                    View divider = new View(this);
+                    divider.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1));
+                    divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                    ingredientsContainer.addView(divider);
                 }
-                count++;
             }
             
-            // Add "See More" button if there are more ingredients
+            // If there are more ingredients than the max visible count, add "See More" button
             if (ingredients.size() > maxVisibleIngredients) {
-                addSeeMoreIngredientsView();
+                // Initially hide extra ingredients
+                for (int i = maxVisibleIngredients * 2; i < ingredientsContainer.getChildCount(); i++) {
+                    ingredientsContainer.getChildAt(i).setVisibility(View.GONE);
+                }
+                
+                // Add "See More" button
+                View seeMoreView = getLayoutInflater().inflate(R.layout.item_see_more, ingredientsContainer, false);
+                TextView seeMoreButton = seeMoreView.findViewById(R.id.btnSeeMore);
+                seeMoreButton.setText("See More ▼");
+                ingredientsContainer.addView(seeMoreView);
+                
+                // Set click listener for "See More" button
+                seeMoreButton.setOnClickListener(v -> {
+                    isExpanded[0] = !isExpanded[0];
+                    
+                    // Show/hide ingredients based on expanded state
+                    for (int i = maxVisibleIngredients * 2; i < ingredientsContainer.getChildCount() - 1; i++) {
+                        ingredientsContainer.getChildAt(i).setVisibility(isExpanded[0] ? View.VISIBLE : View.GONE);
+                    }
+                    
+                    // Update button text
+                    seeMoreButton.setText(isExpanded[0] ? "See Less ▲" : "See More ▼");
+                });
             }
         }
     }
@@ -236,120 +354,181 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ingredientsContainer.addView(ingredientRow);
     }
     
-    private void addSeeMoreIngredientsView() {
-        // Add a gradient blur effect and "See More" button
-        LinearLayout seeMoreContainer = new LinearLayout(this);
-        seeMoreContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        seeMoreContainer.setOrientation(LinearLayout.VERTICAL);
-        
-        View blurView = new View(this);
-        blurView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 
-                getResources().getDimensionPixelSize(R.dimen.blur_height)));
-        blurView.setBackgroundResource(R.drawable.gradient_blur);
-        
-        TextView seeMoreButton = new TextView(this);
-        seeMoreButton.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        seeMoreButton.setText("See More ▼");
-        seeMoreButton.setTextColor(getResources().getColor(R.color.colorAccent));
-        seeMoreButton.setTextSize(14);
-        seeMoreButton.setPadding(32, 32, 32, 32);
-        seeMoreButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        
-        seeMoreContainer.addView(blurView);
-        seeMoreContainer.addView(seeMoreButton);
-        
-        ingredientsContainer.addView(seeMoreContainer);
-        
-        // Set click listener
-        seeMoreButton.setOnClickListener(v -> {
-            // Show all ingredients (implementation would depend on app design)
-            Toast.makeText(RecipeDetailActivity.this, "Show all ingredients", Toast.LENGTH_SHORT).show();
-        });
-    }
-    
     private void updateInstructions(List<Recipe.Instruction> instructions) {
-        // Implement similar to updateIngredients
-        // This would be a simplified version as the full implementation would be similar
-        
+        // Clear existing instructions
         instructionsContainer.removeAllViews();
         
         if (instructions != null && !instructions.isEmpty()) {
             int maxVisibleInstructions = 2;
-            int count = 0;
+            final boolean[] isExpanded = {false};
             
+            // First add all instructions (we'll control visibility later)
+            int count = 0;
             for (Recipe.Instruction instruction : instructions) {
-                if (count < maxVisibleInstructions) {
-                    // Add step title
-                    TextView stepTitle = new TextView(this);
-                    stepTitle.setLayoutParams(new LinearLayout.LayoutParams(
+                // Add step title with proper styling to match the image
+                TextView stepTitle = new TextView(this);
+                LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                titleParams.setMargins(0, (count > 0) ? 24 : 0, 0, 8);
+                stepTitle.setLayoutParams(titleParams);
+                stepTitle.setText((count + 1) + ". " + instruction.getTitle());
+                stepTitle.setTextColor(getResources().getColor(android.R.color.black));
+                stepTitle.setTextSize(16);
+                stepTitle.setTypeface(Typeface.DEFAULT_BOLD);
+                
+                instructionsContainer.addView(stepTitle);
+                
+                // Create a container for instruction steps with less congestion
+                for (String step : instruction.getSteps()) {
+                    TextView stepDesc = new TextView(this);
+                    LinearLayout.LayoutParams stepParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    stepTitle.setText((count + 1) + ". " + instruction.getTitle());
-                    stepTitle.setTextColor(getResources().getColor(android.R.color.black));
-                    stepTitle.setTextSize(16);
-                    stepTitle.setTypeface(Typeface.DEFAULT_BOLD);
-                    stepTitle.setPadding(0, 0, 0, 32);
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                    stepParams.setMargins(0, 0, 0, 8);
+                    stepDesc.setLayoutParams(stepParams);
+                    stepDesc.setText("• " + step);
+                    stepDesc.setTextColor(getResources().getColor(android.R.color.black));
+                    stepDesc.setTextSize(15);
                     
-                    instructionsContainer.addView(stepTitle);
-                    
-                    // Add step descriptions
-                    for (String step : instruction.getSteps()) {
-                        TextView stepDesc = new TextView(this);
-                        stepDesc.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
-                        stepDesc.setText("• " + step);
-                        stepDesc.setTextColor(getResources().getColor(android.R.color.black));
-                        stepDesc.setTextSize(15);
-                        stepDesc.setPadding(0, 0, 0, 16);
-                        
-                        instructionsContainer.addView(stepDesc);
-                    }
+                    instructionsContainer.addView(stepDesc);
                 }
+                
+                // Add a light gray divider between instructions
+                if (instructions.indexOf(instruction) < instructions.size() - 1 && count < maxVisibleInstructions) {
+                    View divider = new View(this);
+                    LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                    dividerParams.setMargins(0, 16, 0, 0);
+                    divider.setLayoutParams(dividerParams);
+                    divider.setBackgroundColor(0xFFE0E0E0); // Light gray color
+                    instructionsContainer.addView(divider);
+                }
+                
                 count++;
+                
+                // Only add maxVisibleInstructions instructions initially
+                if (count >= maxVisibleInstructions && !isExpanded[0]) {
+                    break;
+                }
             }
             
-            // Add "See More" button if there are more instructions
+            // If there are more instructions than the max visible count, implement "See More" functionality
             if (instructions.size() > maxVisibleInstructions) {
-                // Add a gradient blur and see more button (similar to ingredients)
-                FrameLayout seeMoreContainer = new FrameLayout(this);
-                seeMoreContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                // Store the remaining instructions for showing/hiding
+                final List<Recipe.Instruction> remainingInstructions = 
+                    new ArrayList<>(instructions.subList(maxVisibleInstructions, instructions.size()));
                 
-                View blurView = new View(this);
-                blurView.setLayoutParams(new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT, 
-                        getResources().getDimensionPixelSize(R.dimen.blur_height)));
-                blurView.setBackgroundResource(R.drawable.gradient_blur);
+                // Save original view state so we can restore it when collapsing
+                final List<View> originalViews = new ArrayList<>();
+                for (int i = 0; i < instructionsContainer.getChildCount(); i++) {
+                    originalViews.add(instructionsContainer.getChildAt(i));
+                }
                 
-                TextView seeMoreButton = new TextView(this);
-                FrameLayout.LayoutParams textParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT);
-                textParams.gravity = android.view.Gravity.CENTER;
-                seeMoreButton.setLayoutParams(textParams);
+                // Add "See More" button view
+                View seeMoreView = getLayoutInflater().inflate(R.layout.item_see_more, instructionsContainer, false);
+                TextView seeMoreButton = seeMoreView.findViewById(R.id.btnSeeMore);
                 seeMoreButton.setText("See More ▼");
-                seeMoreButton.setTextColor(getResources().getColor(R.color.colorAccent));
-                seeMoreButton.setPadding(32, 32, 32, 32);
                 
-                seeMoreContainer.addView(blurView);
-                seeMoreContainer.addView(seeMoreButton);
+                // Add the view to the container
+                instructionsContainer.addView(seeMoreView);
                 
-                instructionsContainer.addView(seeMoreContainer);
-                
-                // Set click listener
+                // Set up See More/Less button click listener
                 seeMoreButton.setOnClickListener(v -> {
-                    // Show all instructions (implementation would depend on app design)
-                    Toast.makeText(RecipeDetailActivity.this, "Show all instructions", Toast.LENGTH_SHORT).show();
+                    isExpanded[0] = !isExpanded[0];
+                    
+                    // Handle expand/collapse
+                    if (isExpanded[0]) {
+                        // Show remaining instructions
+                        int currentPosition = maxVisibleInstructions;
+                        for (Recipe.Instruction instruction : remainingInstructions) {
+                            // Add divider before additional instructions
+                            View divider = new View(this);
+                            LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                            dividerParams.setMargins(0, 16, 0, 0);
+                            divider.setLayoutParams(dividerParams);
+                            divider.setBackgroundColor(0xFFE0E0E0); // Light gray color
+                            instructionsContainer.addView(divider, instructionsContainer.indexOfChild(seeMoreView));
+                            
+                            // Add instruction title
+                            TextView stepTitle = new TextView(this);
+                            LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                            titleParams.setMargins(0, 24, 0, 8);
+                            stepTitle.setLayoutParams(titleParams);
+                            stepTitle.setText((currentPosition + 1) + ". " + instruction.getTitle());
+                            stepTitle.setTextColor(getResources().getColor(android.R.color.black));
+                            stepTitle.setTextSize(16);
+                            stepTitle.setTypeface(Typeface.DEFAULT_BOLD);
+                            instructionsContainer.addView(stepTitle, instructionsContainer.indexOfChild(seeMoreView));
+                            
+                            // Add instruction steps
+                            for (String step : instruction.getSteps()) {
+                                TextView stepDesc = new TextView(this);
+                                LinearLayout.LayoutParams stepParams = new LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                                stepParams.setMargins(0, 0, 0, 8);
+                                stepDesc.setLayoutParams(stepParams);
+                                stepDesc.setText("• " + step);
+                                stepDesc.setTextColor(getResources().getColor(android.R.color.black));
+                                stepDesc.setTextSize(15);
+                                instructionsContainer.addView(stepDesc, instructionsContainer.indexOfChild(seeMoreView));
+                            }
+                            
+                            currentPosition++;
+                        }
+                        
+                        // Hide the gradient
+                        if (seeMoreView instanceof FrameLayout && ((FrameLayout) seeMoreView).getChildCount() > 0) {
+                            View gradientView = ((FrameLayout) seeMoreView).getChildAt(0);
+                            gradientView.setVisibility(View.GONE);
+                        }
+                    } else {
+                        // Clear the container and restore original state
+                        instructionsContainer.removeAllViews();
+                        
+                        // Re-add the original views
+                        for (View view : originalViews) {
+                            instructionsContainer.addView(view);
+                        }
+                        
+                        // Re-add the See More button
+                        instructionsContainer.addView(seeMoreView);
+                        
+                        // Show the gradient
+                        if (seeMoreView instanceof FrameLayout && ((FrameLayout) seeMoreView).getChildCount() > 0) {
+                            View gradientView = ((FrameLayout) seeMoreView).getChildAt(0);
+                            gradientView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    
+                    // Update button text
+                    seeMoreButton.setText(isExpanded[0] ? "See Less ▲" : "See More ▼");
                 });
             }
         }
+    }
+    
+    private int getIndexOfInstruction(int instructionNumber) {
+        int index = 0;
+        int currentInstruction = 0;
+        
+        while (index < instructionsContainer.getChildCount()) {
+            View view = instructionsContainer.getChildAt(index);
+            if (view instanceof TextView && 
+                ((TextView) view).getText().toString().matches("\\d+\\..*")) {
+                currentInstruction++;
+                if (currentInstruction == instructionNumber) {
+                    return index;
+                }
+            }
+            index++;
+        }
+        
+        return 0;
     }
     
     private void updateRatingStars(float rating) {
@@ -359,13 +538,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             if (i < filledStars) {
                 ratingStars[i].setImageResource(android.R.drawable.btn_star_big_on);
+                ratingStars[i].setColorFilter(getResources().getColor(R.color.colorAccent));
             } else if (i == filledStars && hasHalfStar) {
                 // This is simplified since Android doesn't have a built-in half star
                 // In a real app, you'd use a custom drawable for half-star
                 ratingStars[i].setImageResource(android.R.drawable.btn_star_big_on);
+                ratingStars[i].setColorFilter(getResources().getColor(R.color.colorAccent));
                 ratingStars[i].setAlpha(0.5f);
             } else {
                 ratingStars[i].setImageResource(android.R.drawable.btn_star_big_off);
+                ratingStars[i].setColorFilter(getResources().getColor(R.color.colorLightText));
             }
         }
     }

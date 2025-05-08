@@ -31,13 +31,18 @@
 
         <!-- Splash Screen (First Screen When App Opens) -->
         <activity
-            android:name=".SplashScreen"
+            android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Legacy Splash Screen - keep for backward compatibility -->
+        <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
 
         <!-- Onboarding Screens -->
         <activity android:name=".OnboardingActivity" android:exported="false"/>
@@ -79,6 +84,24 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- Search Activity -->
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RecipeNest" />
+
+        <!-- My Recipes Activity -->
+        <activity
+            android:name=".MyRecipesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RecipeNest" />
+
+        <!-- Profile Activity -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RecipeNest" />
 
         <!-- Firebase Integration (if needed in the future)
         <meta-data

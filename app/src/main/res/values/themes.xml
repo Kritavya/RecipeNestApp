@@ -9,7 +9,23 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Theme.RecipeNest" parent="Base.Theme.Figma" />
+    <style name="Theme.RecipeNest" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">@color/colorAccent</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Background -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- Force light theme -->
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
 
 
     <!-- Custom Button Style to Remove Tinting -->

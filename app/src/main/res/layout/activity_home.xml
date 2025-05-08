@@ -56,7 +56,7 @@
             android:foreground="?attr/selectableItemBackgroundBorderless" />
     </RelativeLayout>
 
-    <!-- Scrollable Content -->
+    <!-- Recipe Grid -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -67,10 +67,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Feature Recipe Card -->
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+            
+            <!-- Daily Recipe Feature Card -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/daily_recipe_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -87,38 +89,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/dummy" />
+                        android:src="@drawable/placeholder_food" />
 
                     <!-- Daily Recipe Label -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Daily Recipe"
-                        android:background="@drawable/rounded_bg"
-                        android:backgroundTint="#FF9A04"
+                        android:background="@drawable/rounded_accent_background"
                         android:textColor="#FFFFFF"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="6dp"
                         android:textSize="14sp"
                         android:layout_margin="16dp" />
 
-                    <!-- Bookmark Icon -->
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/export"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="16dp"
-                        android:background="@drawable/circle_background"
-                        android:padding="6dp" />
-
                     <!-- Rating -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:background="@drawable/rounded_bg"
-                        android:backgroundTint="#FFFFFF"
+                        android:background="@drawable/rating_background"
                         android:padding="4dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignBottom="@id/feature_recipe_image"
@@ -127,13 +117,15 @@
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:src="@android:drawable/btn_star"
-                            android:tint="#FF9A04" />
+                            android:src="@drawable/ic_star"
+                            android:layout_gravity="center_vertical" />
 
                         <TextView
+                            android:id="@+id/daily_recipe_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4.9"
+                            android:textColor="#FFFFFF"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:layout_marginStart="4dp" />
@@ -149,9 +141,10 @@
                         android:layout_below="@id/feature_recipe_image">
 
                         <TextView
+                            android:id="@+id/daily_recipe_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pasta Primavera"
+                            android:text="Recipe Name"
                             android:textColor="#FFFFFF"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -165,7 +158,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="by Nadine Hettinger"
+                                android:text="Featured Recipe"
                                 android:textColor="#FFFFFF"
                                 android:textSize="14sp"
                                 android:alpha="0.9" />
@@ -176,11 +169,11 @@
                                 android:layout_weight="1" />
 
                             <TextView
+                                android:id="@+id/daily_recipe_cuisine"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Italian"
-                                android:background="@drawable/rounded_bg"
-                                android:backgroundTint="#FFFFFF"
+                                android:text="Cuisine"
+                                android:background="@drawable/rounded_white_background"
                                 android:textColor="#FF9A04"
                                 android:paddingHorizontal="16dp"
                                 android:paddingVertical="4dp"
@@ -189,6 +182,17 @@
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Food Categories Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categories"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
 
             <!-- Food Categories - Row 1 -->
             <LinearLayout
@@ -201,22 +205,26 @@
 
                 <!-- Breakfast -->
                 <LinearLayout
+                    android:id="@+id/category_breakfast"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/breakfast"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -232,22 +240,26 @@
 
                 <!-- Lunch -->
                 <LinearLayout
+                    android:id="@+id/category_lunch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/lunch"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -263,22 +275,26 @@
 
                 <!-- Dinner -->
                 <LinearLayout
+                    android:id="@+id/category_dinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/dinner"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -294,22 +310,26 @@
 
                 <!-- Dessert -->
                 <LinearLayout
+                    android:id="@+id/category_dessert"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/dessert"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -335,22 +355,26 @@
 
                 <!-- Western -->
                 <LinearLayout
+                    android:id="@+id/category_western"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/western"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -366,22 +390,26 @@
 
                 <!-- Asian -->
                 <LinearLayout
+                    android:id="@+id/category_asian"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/asian"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -395,24 +423,28 @@
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
-                <!-- Drinks -->
+                <!-- Vegetarian -->
                 <LinearLayout
+                    android:id="@+id/category_vegetarian"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/drinks"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -426,24 +458,28 @@
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
-                <!-- Meat -->
+                <!-- Quick Meal -->
                 <LinearLayout
+                    android:id="@+id/category_quick"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:layout_width="54dp"
                         android:layout_height="54dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="#FFEDCC"
-                        android:padding="12dp">
+                        android:backgroundTint="#FFEDCC">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:src="@drawable/meat"
                             android:tint="#FF9A04" />
                     </FrameLayout>
@@ -457,14 +493,15 @@
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
             </LinearLayout>
-            
-            <!-- Easy & Simple Recipe Section -->
+
+            <!-- Recently Uploaded Section -->
             <LinearLayout
+                android:id="@+id/recentRecipesSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
 
                 <!-- Section Header -->
                 <RelativeLayout
@@ -475,163 +512,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Easy &amp; Simple Recipe"
+                        android:text="Recently Uploaded"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
 
                     <TextView
+                        android:id="@+id/btnViewAllRecent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="See More"
+                        android:text="View All"
                         android:textColor="#FF9A04"
                         android:textSize="14sp"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:padding="4dp" />
                 </RelativeLayout>
 
-                <!-- Recipes List -->
-                <LinearLayout
+                <!-- Horizontal RecyclerView for Recent Recipes -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRecentRecipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Scrambled Egg Card -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Scrambled Egg"
-                                android:textSize="14sp"
-                                android:textColor="#000000"
-                                android:textStyle="bold"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginHorizontal="8dp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginHorizontal="8dp">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@android:drawable/btn_star"
-                                    android:tint="#FF9A04" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4.9 | 5k Reviews"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Gordon Ramsey"
-                                android:textSize="12sp"
-                                android:textColor="#666666"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:layout_marginHorizontal="8dp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Grilled Cheese Sandwich Card -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_2" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Grilled Cheese Sandwich"
-                                android:textSize="14sp"
-                                android:textColor="#000000"
-                                android:textStyle="bold"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginHorizontal="8dp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginHorizontal="8dp">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@android:drawable/btn_star"
-                                    android:tint="#FF9A04" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4.9 | 4k Reviews"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Alain Ducasse"
-                                android:textSize="12sp"
-                                android:textColor="#666666"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:layout_marginHorizontal="8dp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
+                    android:clipToPadding="false"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp" />
             </LinearLayout>
-            
-            <!-- Indonesian Food Section -->
+
+            <!-- All Recipes Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="24dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
 
                 <!-- Section Header -->
                 <RelativeLayout
@@ -642,153 +556,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Indonesian Food"
+                        android:text="All Recipes"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="See More"
-                        android:textColor="#FF9A04"
-                        android:textSize="14sp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true" />
                 </RelativeLayout>
 
-                <!-- Recipes List -->
-                <LinearLayout
+                <!-- Grid RecyclerView for All Recipes -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRecipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Nasi Goreng Card -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_3" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Nasi Goreng Rendang"
-                                android:textSize="14sp"
-                                android:textColor="#000000"
-                                android:textStyle="bold"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginHorizontal="8dp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginHorizontal="8dp">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@android:drawable/btn_star"
-                                    android:tint="#FF9A04" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4.8 | 7k Reviews"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="William Wongso"
-                                android:textSize="12sp"
-                                android:textColor="#666666"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:layout_marginHorizontal="8dp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Coto Makassar Card -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_4" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Coto Makassar"
-                                android:textSize="14sp"
-                                android:textColor="#000000"
-                                android:textStyle="bold"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginHorizontal="8dp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginHorizontal="8dp">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@android:drawable/btn_star"
-                                    android:tint="#FF9A04" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4.7 | 3k Reviews"
-                                    android:textSize="12sp"
-                                    android:layout_marginStart="4dp" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Arnold Poernomo"
-                                android:textSize="12sp"
-                                android:textColor="#666666"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:layout_marginHorizontal="8dp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
+                    android:clipToPadding="false" />
             </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

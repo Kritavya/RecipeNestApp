@@ -1,0 +1,75 @@
+[
+  {
+    "id": "default1",
+    "name": "Sausage Nasi Goreng",
+    "description": "Delicious Indonesian fried rice with sausage, vegetables, and aromatic spices.",
+    "userId": "system",
+    "userName": "RecipeNest",
+    "userPhotoUrl": "",
+    "imageUrls": [
+      "https://www.simplyrecipes.com/thmb/tvQl2iWXVHE10r9qJH5CwMwBE1g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Nasi-Goreng-LEAD-7-3da17931fcf741dea6818e8e0fb569c3.jpg"
+    ],
+    "categories": ["Asian", "Indonesian", "Rice", "Oriental"],
+    "ingredients": [
+      {"name": "Cooked rice (preferably day-old)", "amount": "2", "unit": "cups"},
+      {"name": "Sausage, sliced", "amount": "2", "unit": "pcs"},
+      {"name": "Garlic, minced", "amount": "2", "unit": "cloves"},
+      {"name": "Small onion, chopped", "amount": "1", "unit": "pc"},
+      {"name": "Red chili, sliced", "amount": "1", "unit": "pc"},
+      {"name": "Carrot, diced", "amount": "1", "unit": "pc"},
+      {"name": "Green onions, chopped", "amount": "2", "unit": "pcs"},
+      {"name": "Soy sauce", "amount": "1", "unit": "tbsp"},
+      {"name": "Sweet soy sauce (kecap manis)", "amount": "2", "unit": "tbsp"},
+      {"name": "Vegetable oil", "amount": "2", "unit": "tbsp"},
+      {"name": "Salt and pepper", "amount": "to taste", "unit": ""}
+    ],
+    "instructions": [
+      {
+        "title": "Preparation (5 Minutes)",
+        "steps": [
+          "Cook the rice if not using leftover rice.",
+          "Slice the sausages, mince the garlic, chop the onion, slice the chili, and dice the carrot."
+        ]
+      },
+      {
+        "title": "Cooking the Sausage (5 Minutes)",
+        "steps": [
+          "Heat 1 tablespoon of vegetable oil in a large frying pan or wok over medium heat.",
+          "Add the sliced sausages and fry until they start to brown (about 2-3 minutes).",
+          "Remove the sausages and set aside."
+        ]
+      },
+      {
+        "title": "Cooking the Aromatics (3 Minutes)",
+        "steps": [
+          "In the same pan, add another tablespoon of oil if needed.",
+          "Add the chopped onion and minced garlic, and fry until fragrant (about 1 minute).",
+          "Add the sliced chili and diced carrot, and stir-fry for another 2 minutes."
+        ]
+      },
+      {
+        "title": "Finishing the Dish (7 Minutes)",
+        "steps": [
+          "Add the cooked rice to the pan, breaking up any clumps with a spatula.",
+          "Return the sausages to the pan and mix well.",
+          "Pour in the soy sauce and sweet soy sauce, and stir to coat the rice evenly.",
+          "Season with salt and pepper to taste.",
+          "Continue stir-frying for about 3-5 minutes until the rice is heated through and slightly crispy.",
+          "Add the chopped green onions and give it a final stir.",
+          "Serve hot, garnished with additional green onions and fried egg if desired."
+        ]
+      }
+    ],
+    "prepTime": 5,
+    "cookTime": 15,
+    "servings": 2,
+    "difficulty": "easy",
+    "isPublic": true,
+    "rating": 4.9,
+    "ratingCount": 85,
+    "createdAt": "2023-05-21T12:30:00.000Z",
+    "updatedAt": "2023-05-21T12:30:00.000Z",
+    "cuisineType": "Indonesian",
+    "isFavorite": false
+  }
+] 

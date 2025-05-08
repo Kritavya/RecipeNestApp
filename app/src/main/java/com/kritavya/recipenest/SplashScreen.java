@@ -23,7 +23,6 @@ public class SplashScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         ImageView splashLogo = findViewById(R.id.splash_logo);
-        splashLogo.setImageResource(R.drawable.local_logo);
 
         new Handler(Looper.getMainLooper()).postDelayed(this::checkUserAndNavigate, SPLASH_DELAY);
     }

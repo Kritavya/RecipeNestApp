@@ -77,4 +77,13 @@ dependencies {
     
     // UCrop for image cropping (from JitPack)
     implementation("com.github.yalantis:ucrop:2.2.8-native")
+    
+    // Gson for JSON parsing
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // CardView for card layouts
+    implementation("androidx.cardview:cardview:1.0.0")
+    
+    // RecyclerView for lists
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 }

@@ -214,7 +214,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,6 +233,33 @@
                 android:padding="12dp"
                 android:inputType="number"
                 android:hint="4"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Video URL -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Video URL:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/etVideoUrl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="12dp"
+                android:inputType="textUri"
+                android:hint="https://youtube.com/watch?v=..."
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
